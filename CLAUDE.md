@@ -4,9 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A single-file presenter deck: `fortiaigate.html` (~2,500 lines) containing all CSS, HTML, and JS
-inline. It is a live-demo sales/technical talk — "Securing AI Agents" — built around FortiAIGate
-and the OWASP Top 10 for LLMs. There is no build step, no package manager, no tests, no
+A single-file presenter deck: `fortiaigate.html` (~2,600 lines) containing all CSS, HTML, and JS
+inline. It is a live-demo sales/technical talk aimed at **AWS sellers** — "Securing the AI They
+Ship" — about the GenAI workloads their customers build on AWS, framed against the OWASP Top 10
+for LLMs. The `main` branch holds the earlier SOC-centric version (tag `v1-soc-storyline`). There is no build step, no package manager, no tests, no
 dependencies except the Google Fonts `Inter` stylesheet. `assets/` holds Fortinet SVG icons and
 product screenshots referenced by relative path.
 
@@ -39,7 +40,7 @@ fixed skeleton of container divs; all content is rendered into it from JS data s
   scale. Any layout change that moves nodes needs `updateConns()` re-run (it is already wired to
   `render()`, `resize`, and `fullscreenchange`).
 
-### The flow
+### The flow (and the fork)
 
 `FLOW` is the linear presenter order — the single source of truth for navigation and the top
 timeline. Each entry is either `{type:'act', n}` (renders the diagram view via `render()`) or
@@ -47,8 +48,18 @@ timeline. Each entry is either `{type:'act', n}` (renders the diagram view via `
 (`#introOverlay`) sits before `FLOW[0]`; the closing summary (`#summaryOverlay`) and the "Try it"
 screen sit after the last entry.
 
-Adding a slide means adding an entry to both `SLIDES` and `FLOW` — the timeline, nav buttons, and
-clicker all derive from `FLOW`.
+`FLOW` is assembled, not hardcoded: `FLOW_HEAD` (foundation + fork slides) + the selected entry of
+`FLOW_PATHS` + `FLOW_TAIL` (product slides, shared). The `fork` slide is the choose-your-own-
+adventure stop — its two cards call `choosePath('data'|'models')`, which runs `buildFlow()` and
+jumps to the first stop of that path. The two paths are deliberately different problems:
+
+- `models` — **the public → your customer's models** (inbound). The built-out path: acts 1–4 plus
+  the OWASP slide.
+- `data` — **your customer's data → public models** (outbound). A single stub slide (`dataSoon`)
+  describing what that path will cover; not yet written.
+
+Adding a slide means adding an entry to `SLIDES` and to the right `FLOW_*` array — the timeline,
+nav buttons, and clicker all derive from `FLOW`.
 
 ### Clicker sub-steps
 
@@ -57,7 +68,7 @@ Navigation is two-level: `flowIdx` (which stop) and `subStepIdx` (position withi
 `applyStop()` define per-stop behavior:
 
 - `ACT_STEPS[n]` lists an act's steps — `{panel:'nodeId'}` opens that node's detail panel exactly
-  as a click would, `{sim:'soc'|'socMesh'|'attack'|'code'}` launches a full-screen auto-playing
+  as a click would, `{sim:'promise'|'mesh'|'attack'|'code'}` launches a full-screen auto-playing
   example overlay.
 - The `agency` slide has hardcoded sub-steps 0–4 (compare → gen demo → back → agent demo → back).
 - Mouse interaction must keep `subStepIdx` in sync — see `agencyPick()`/`agencyReturn()` for the
@@ -71,13 +82,20 @@ branches on which overlay is currently up.
 
 - `ACTS` — four acts, each with `accent`, copy (`subtitle`, `sellerTip`, `narration`) and a
   `tagLabel`. `ACT_COLORS`/`ACT_RGB` index by act.
+- Three columns inside the 960×540 stage carry the whole story: the public zone on the left
+  (`p*` nodes, x≈105–205), the customer's AWS workload on the right (`a*` nodes, x=850 and the
+  app/agent column at x=445), and **the empty middle column at x=620** — the slot where the control
+  point should be. That slot is re-used act to act: act 2 fills it with blind spots (`b*`), act 3
+  with incidents (`r*`), act 4 with the gateway (`gw*`). Moving those x-coordinates breaks the
+  whole point of the layout.
 - `NODES` — every diagram element across all acts in one array, tagged with `act`. Visibility is
-  cumulative (`n.act <= curAct`) except acts 2 and 3 nodes, which are hidden once act 4 (the
-  governed state) is reached. Special node kinds, each with its own branch in `renderDiagram()`:
-  `isProxyBox` (the act-4 gateway block, whose `proxyItems` pills open other nodes' panels),
-  `isHidden` (detail nodes reachable only via those pills), `isEdgeAnchor` (invisible connector
-  endpoints), `optional` (renders an "opt" badge).
-- `CONNS` — `[fromId, toId, act, color]`; act-4 connectors route through the `n9L`/`n9R` anchors.
+  cumulative (`n.act <= curAct`) with two exceptions in `renderDiagram()` that implement the
+  middle-column hand-off: act-2 nodes hide once act 3 arrives, act-3 nodes once act 4 does.
+  Special node kinds, each with its own branch in `renderDiagram()`: `isProxyBox` (the act-4
+  gateway block, whose `proxyItems` pills open other nodes' panels), `isHidden` (detail nodes
+  reachable only via those pills), `isEdgeAnchor` (invisible connector endpoints), `optional`
+  (renders an "opt" badge), `simBtn` (declares the example button `openPanel()` renders).
+- `CONNS` — `[fromId, toId, act, color]`; act-4 connectors route through the `gwL`/`gwR` anchors.
 - Node bodies are HTML strings. `g('term')` wraps a term in a glossary tooltip sourced from
   `GLOSS`; the tooltip is re-rendered into a body-level `#floatTip` via delegated hover so it
   escapes overflow clipping. Adding a term means adding it to `GLOSS` and calling `g()`.
@@ -94,8 +112,11 @@ the `html.projector-mode` block. Brand colors live in `C` (JS) and `--ft-*` (CSS
 
 ### Simulations
 
-Overlay-based, timer-driven demos: the agency gen/agent comparison, the SOC agent sims
-(`SOC_SIMS`, `runSocSim()`), the SOC mesh view, and the live code-completion sim (`runCodeSim()`).
+Overlay-based, timer-driven demos: the agency gen/agent comparison, the support-agent sims
+(`AGENT_SIMS`, `runSim()` — `promise` does the job, `attack` gets injected), the "scale this to
+production" view (`renderScaleView()`), and the builder's-IDE sim (`runCodeSim()`) showing how the
+tool the agent abuses got written. Element ids still say `soc*` (`#socSim`, `#socInner`) from the
+previous storyline; the functions no longer do.
 They share cancellation infrastructure — `agencyTimers` + `aT()`, `clearAgencyTimers()`,
 `clearSocStreamLoop()`, `clearAct3Pulse()`. Any new timed animation must register its timers so
 navigating away (`goFlow()` clears them) doesn't leave a sim playing over the next stop.
@@ -106,7 +127,16 @@ navigating away (`goFlow()` clears them) doesn't leave a sim playing over the ne
 - Content and layout are data, not markup: change `ACTS`/`NODES`/`SLIDES`/`FLOW`, not the static
   `<body>` skeleton, unless adding a genuinely new container.
 - Copy is presenter-facing and carefully worded; `seller`/`sellerTip` fields are talk-track notes
-  shown in panels. Preserve the OWASP LLM code references (LLM01/LLM02/LLM05/LLM06/LLM10) and the
-  2025 Top 10 framing when editing copy.
+  shown in panels, written for an AWS seller talking to a customer building on AWS. Preserve the
+  OWASP LLM code references (LLM01/LLM02/LLM05/LLM06/LLM07/LLM08/LLM10) and the 2025 Top 10
+  framing when editing copy.
+- No browser or test runner is available in this environment, so verify changes by extracting the
+  `<script>` block to a file and running it in Node against a stub `document`/`window` (elements
+  need `classList`, `style.setProperty`, `innerHTML`, `appendChild`, `querySelector(All)`,
+  `getBoundingClientRect`), with `setTimeout` stubbed to a no-op to freeze animations. `eval` the
+  deck source and the test code together so the deck's `const`s are in scope, then walk every
+  `FLOW` stop and sub-step on both paths, call `openPanel` on every node, run each example, and
+  assert that every `ACT_STEPS` panel id, `proxyItems.nodeId`, `CONNS` endpoint, and flow slide id
+  resolves. That catches essentially every breakage this file is prone to.
 - Commit messages are short imperative summaries of the deck change (e.g. "Add in-deck fullscreen
   toggle (button + F key)").
