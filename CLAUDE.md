@@ -55,8 +55,10 @@ jumps to the first stop of that path. The two paths are deliberately different p
 
 - `models` — **the public → your customer's models** (inbound). The built-out path: acts 1–4 plus
   the OWASP slide.
-- `data` — **your customer's data → public models** (outbound). A single stub slide (`dataSoon`)
-  describing what that path will cover; not yet written.
+- `data` — **your customer's data → public models** (outbound). One overview slide (`dataSoon`)
+  covering that conversation. Only the `models` path is walked out in full, but nothing in the
+  deck says so — the fork gives both paths equal weight on purpose, and the outbound slide reads
+  as a finished summary rather than a placeholder. Keep it that way when editing.
 
 Adding a slide means adding an entry to `SLIDES` and to the right `FLOW_*` array — the timeline,
 nav buttons, and clicker all derive from `FLOW`.

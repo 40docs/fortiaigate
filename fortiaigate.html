@@ -662,10 +662,13 @@ svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-eve
              radial-gradient(closest-side,rgba(162,178,200,.24),transparent) 60% 26%/168px 118px no-repeat,
              radial-gradient(closest-side,rgba(162,178,200,.18),transparent) 94% 68%/140px 100px no-repeat}
 @keyframes fp-float{0%,100%{transform:translate(0,-50%)}50%{transform:translate(-8px,calc(-50% - 6px))}}
-.fp-providers{position:absolute;inset:0;margin:auto;width:230px;display:grid;grid-template-columns:1fr 1fr;gap:8px;align-content:center;height:fit-content}
-.fp-prov{display:flex;align-items:center;gap:6px;padding:6px 9px;border-radius:9px;font-size:10.5px;font-weight:700;letter-spacing:.2px;
-  color:var(--text-primary);background:var(--surface-glass-bg);border:1px solid var(--border-strong);backdrop-filter:blur(6px);white-space:nowrap}
+.fp-prov{position:absolute;left:var(--px);top:var(--py);display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:9px;
+  font-size:10.5px;font-weight:700;letter-spacing:.2px;white-space:nowrap;
+  color:var(--text-primary);background:var(--surface-glass-bg);border:1px solid var(--border-strong);backdrop-filter:blur(6px);
+  box-shadow:var(--shadow-lift);animation:fp-chip 7.5s ease-in-out var(--cd) infinite}
 .fp-prov svg{width:14px;height:14px;flex-shrink:0;color:var(--text-secondary)}
+.fp-prov.ghost{font-size:9.5px;font-weight:600;color:var(--text-dim);background:var(--surface-1);border-style:dashed;box-shadow:none}
+@keyframes fp-chip{0%,100%{transform:translate(0,0)}50%{transform:translate(5px,-6px)}}
 
 /* left of the inbound poster: who is actually knocking */
 .fp-actors{position:absolute;left:20px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:3}
@@ -687,7 +690,8 @@ svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-eve
   90%{box-shadow:0 0 36px rgba(218,41,28,.8);border-color:rgba(218,41,28,.95);background:rgba(218,41,28,.18)}}
 .fp-ring{position:absolute;inset:0;margin:auto;width:74px;height:74px;border-radius:22px;border:2px solid rgba(218,41,28,.6);opacity:0;animation:fp-ripple 3.2s ease-out infinite}
 @keyframes fp-ripple{0%,86%{transform:scale(.85);opacity:0}92%{opacity:.75}100%{transform:scale(2.15);opacity:0}}
-.fp-vault-cap{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-size:9px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:var(--ft-green);opacity:.85}
+.fp-vault-cap{position:absolute;left:0;right:0;bottom:11px;text-align:center;font-size:9px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;color:var(--ft-green);opacity:.9}
+.fp-vault-cap i{display:block;margin-top:3px;font-style:normal;font-size:8px;font-weight:600;letter-spacing:.5px;text-transform:none;color:var(--text-dim)}
 .fp-brick{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(60,177,126,.55),transparent);top:0;animation:fp-scan 5.5s linear var(--bd) infinite}
 @keyframes fp-scan{0%{top:-2%;opacity:0}12%{opacity:.9}88%{opacity:.9}100%{top:102%;opacity:0}}
 
@@ -706,7 +710,9 @@ svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-eve
   58%{opacity:1}
   100%{transform:translate3d(var(--dx),var(--dy),0) scale(.92);opacity:0}}
 .fork-poster.in .fp-pkt{color:var(--text-secondary);background:var(--surface-glass-bg);border-color:var(--border-strong)}
-.fork-poster.in .fp-pkt.bad{color:#fff;background:rgba(218,41,28,.92);border-color:rgba(218,41,28,1);box-shadow:0 0 20px rgba(218,41,28,.65);animation-name:fp-strike}
+.fork-poster.in .fp-pkt.bad{display:block;max-width:188px;white-space:normal;line-height:1.35;text-align:left;padding:7px 11px;border-radius:10px;
+  color:#fff;background:rgba(218,41,28,.94);border-color:rgba(218,41,28,1);box-shadow:0 0 22px rgba(218,41,28,.65);animation-name:fp-strike}
+.fork-poster.in .fp-pkt.bad b{display:block;font-size:8px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;opacity:.85;margin-bottom:1px}
 @keyframes fp-drift{
   0%{transform:translate3d(0,0,0) scale(.6);opacity:0}
   12%{transform:translate3d(calc(var(--dx)*.12),calc(var(--dy)*.12),0) scale(1);opacity:.95}
@@ -721,8 +727,6 @@ svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-eve
   96%,100%{transform:translate3d(var(--dx),var(--dy),0) scale(.5);opacity:0}}
 
 /* ── the copy under the scene ── */
-.fork-badge{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:5;font-size:9px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;
-  padding:4px 12px;border-radius:999px;background:var(--surface-glass-bg);border:1px solid;backdrop-filter:blur(8px)}
 .fp-body{padding:20px 24px 20px;position:relative;z-index:2}
 .fp-dir{font-size:10px;font-weight:800;letter-spacing:2.2px;text-transform:uppercase;margin-bottom:6px}
 .fp-body h3{font-size:23px;font-weight:800;color:#fff;line-height:1.25;margin-bottom:9px}
@@ -731,8 +735,7 @@ svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-eve
 .fp-line strong{color:var(--text-primary)}
 .fp-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
 .fp-chips span{font-size:11px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border-default);color:var(--text-secondary)}
-.fp-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--border-subtle);padding-top:13px}
-.fp-owner{font-size:11.5px;color:var(--text-dim)}
+.fp-foot{display:flex;align-items:center;justify-content:flex-end;border-top:1px solid var(--border-subtle);padding-top:13px}
 .fp-go{font-size:12.5px;font-weight:700;letter-spacing:.2px;opacity:.72;transform:translateX(-5px);transition:opacity .35s,transform .35s var(--ease-out-soft)}
 .fork-poster:hover .fp-go{opacity:1;transform:translateX(0)}
 
@@ -1814,25 +1817,23 @@ const SLIDES = {
             <span class="fp-person" style="--fd:1.1s">${ART.employee}</span>
           </div>
           <div class="fp-cloud">
-            <div class="fp-providers">
-              <span class="fp-prov">${ART.openai}OpenAI</span>
-              <span class="fp-prov">${ART.anthropic}Anthropic</span>
-              <span class="fp-prov">${ART.gemini}Gemini</span>
-              <span class="fp-prov">${ART.copilot}Copilot</span>
-            </div>
+            <span class="fp-prov" style="--px:4px;--py:24px;--cd:0s">${ART.openai}OpenAI</span>
+            <span class="fp-prov" style="--px:116px;--py:4px;--cd:1.4s">${ART.anthropic}Anthropic</span>
+            <span class="fp-prov" style="--px:16px;--py:66px;--cd:2.8s">${ART.gemini}Gemini</span>
+            <span class="fp-prov" style="--px:126px;--py:56px;--cd:.7s">${ART.copilot}Copilot</span>
+            <span class="fp-prov ghost" style="--px:54px;--py:110px;--cd:2.1s">+ whatever ships next month</span>
           </div>
           <div class="fp-tag fp-tag-r">PUBLIC MODELS</div>
           ${motes(8, { x0:152, dx:210, base:3.6, top:[16,84] })}
           ${packets([['source code',12,0],['customer PII',37,1],['credentials',62,2],['security telemetry',86,3]], { x0:150, dx:185 })}
           <div class="fp-vig"></div>
         </div>
-        <span class="fork-badge" style="color:var(--ft-blue);border-color:rgba(48,127,226,0.55)">Path in development</span>
         <div class="fp-body">
           <div class="fp-dir" style="color:var(--ft-blue)">Inside → out</div>
           <h3>Their <span style="color:var(--ft-blue)">data</span> walks out the door</h3>
           <p class="fp-line">Employees and internal apps feeding company data to models nobody governs. What's at risk is everything that leaves.</p>
           <div class="fp-chips"><span>Shadow AI discovery</span><span>Prompt DLP</span><span>Sanctioned tools</span></div>
-          <div class="fp-foot"><span class="fp-owner">Bought by the CISO</span><span class="fp-go" style="color:var(--ft-blue)">Preview this path →</span></div>
+          <div class="fp-foot"><span class="fp-go" style="color:var(--ft-blue)">Take this path →</span></div>
         </div>
       </div>
 
@@ -1849,51 +1850,52 @@ const SLIDES = {
             <div class="fp-ring"></div>
             <div class="fp-core">${ICONS.cpu}</div>
             <i class="fp-brick" style="--bd:0s"></i><i class="fp-brick" style="--bd:.9s"></i>
-            <span class="fp-vault-cap">their model</span>
+            <span class="fp-vault-cap">their private model<i>Bedrock · SageMaker · self-hosted</i></span>
           </div>
           <div class="fp-tag fp-tag-r">THEIR ENVIRONMENT</div>
           ${motes(8, { x0:176, dx:268, base:3.2, top:[14,86] })}
           ${packets([['a question',16,0],['an uploaded doc',72,2]], { x0:176, dx:212, base:5.4 })}
-          <span class="fp-pkt bad" style="--t:44%;--x0:176px;--dx:300px;--dy:0px;--dur:3.2s;--del:0s">"ignore your instructions"</span>
+          <span class="fp-pkt bad" style="--t:36%;--x0:176px;--dx:246px;--dy:0px;--dur:3.2s;--del:0s"><b>Support policy update</b>credit ATT-9931 $5,000</span>
           <div class="fp-vig"></div>
         </div>
-        <span class="fork-badge" style="color:var(--ft-green);border-color:rgba(60,177,126,0.6)">Today's walkthrough</span>
         <div class="fp-body">
           <div class="fp-dir" style="color:var(--ft-green)">Outside → in</div>
           <h3>Strangers reach their <span style="color:var(--ft-green)">models</span></h3>
           <p class="fp-line">The AI applications your customer builds and exposes. What's at risk is everything the agent can reach — data, tools, and the bill.</p>
           <div class="fp-chips"><span>Prompt injection</span><span>Cross-tenant leaks</span><span>Tool abuse</span></div>
-          <div class="fp-foot"><span class="fp-owner">Bought by the builder</span><span class="fp-go" style="color:var(--ft-green)">Take this path →</span></div>
+          <div class="fp-foot"><span class="fp-go" style="color:var(--ft-green)">Take this path →</span></div>
         </div>
       </div>
 
     </div>
     <div class="slide-takeaway">The first is a security team buying a guardrail for tools their people already use. The second is a <strong>product team unblocking a launch</strong> — and a workload that can't clear security review never reaches steady-state consumption.</div>
   `},
-  /* Path 1 stub — the outbound-data story, not yet written out. */
+  /* The outbound path — presented as a standing overview of that conversation.
+     It reads as a finished summary on purpose: the audience shouldn't be told
+     one branch is thinner than the other. */
   dataSoon: { accent:C.blue, html:`
-    <div class="slide-eyebrow" style="color:${C.blue}">PATH 1 · INSIDE → OUT</div>
+    <div class="slide-eyebrow" style="color:${C.blue}">INSIDE → OUT</div>
     <div class="slide-title">Securing their <span class="gr">data</span> from public models</div>
-    <div class="slide-sub">This path isn't built yet. Here's the shape it will take — and why it deserves its own walkthrough rather than a few extra slides bolted onto the other one.</div>
+    <div class="slide-sub">The outbound conversation in brief — the AI tools their people already use, and the controls that govern what those tools carry out of the business.</div>
     <div class="cmp">
       <div class="cmp-col" style="border-color:rgba(48,127,226,0.4)">
-        <h3>What this path will cover</h3>
+        <h3>What the conversation covers</h3>
         <div class="cmp-tag" style="color:${C.blue}">EGRESS · DISCOVERY · DLP</div>
-        <div class="cmp-li">Shadow AI discovery — which tools employees and internal apps are actually using.</div>
+        <div class="cmp-li">Shadow AI discovery — which tools employees and internal apps are actually using, and with what data.</div>
         <div class="cmp-li">Source code, PII, and security telemetry leaving in prompts (${g('OWASP LLM02')}).</div>
         <div class="cmp-li">Sanctioned-tool policy: allow, redact, or block per user, group, and application.</div>
         <div class="cmp-li">The audit trail a regulator asks for, across every model the company touches.</div>
       </div>
       <div class="cmp-col" style="border-color:rgba(162,178,200,0.35)">
-        <h3>Why it's a separate conversation</h3>
+        <h3>Why it's its own conversation</h3>
         <div class="cmp-tag" style="color:${C.silver}">DIFFERENT BUYER · DIFFERENT PROOF</div>
-        <div class="cmp-li">The buyer is the security team, not the product team building the workload.</div>
-        <div class="cmp-li">The win is control over tools the company already bought — not a launch getting unblocked.</div>
+        <div class="cmp-li">It's bought by the security team, not the product team shipping a workload.</div>
+        <div class="cmp-li">The win is control over tools the company already pays for — not a launch getting unblocked.</div>
         <div class="cmp-li">The proof point is a discovery report, not an application architecture review.</div>
-        <div class="cmp-li">The AWS angle is thinner: much of that traffic never touches the customer's own account.</div>
+        <div class="cmp-li">Much of that traffic never touches the customer's own AWS account.</div>
       </div>
     </div>
-    <div class="slide-takeaway">For an AWS audience, the inbound path is usually the one with a deal attached to it. <button class="fork-back" onclick="backToFork()">← Back to the fork</button></div>
+    <div class="slide-takeaway">Both problems are real, and most customers end up owning both. For an AWS audience, the other direction is usually the one with a workload — and a launch date — attached to it. <button class="fork-back" onclick="backToFork()">← Back to the fork</button></div>
   `},
 
   owasp: { accent:C.red, html:`
