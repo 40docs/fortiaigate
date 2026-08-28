@@ -621,13 +621,21 @@ svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-eve
 .tryit-back{display:block;margin:0 auto;font-size:13px;font-weight:600;color:var(--text-secondary);background:var(--surface-2);border:1px solid var(--border-default);border-radius:24px;padding:11px 26px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
 .tryit-back:hover{background:var(--surface-1);color:var(--text-primary)}
 /* ── PREAMBLE SLIDE (the open letter) ── */
-.sig-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 20px;max-width:900px}
-.sig{font-size:11.5px;font-weight:700;letter-spacing:.3px;color:var(--text-secondary);background:var(--surface-2);border:1px solid var(--border-default);border-radius:999px;padding:5px 13px}
-.sig.more{color:var(--text-dim);font-weight:600;border-style:dashed}
-.letter-quote{position:relative;max-width:860px;margin:0 auto 22px;padding:18px 26px 16px 30px;border-left:3px solid var(--ft-red);border-radius:0 12px 12px 0;
-  background:var(--surface-1);font-size:16px;font-weight:600;line-height:1.6;color:var(--text-primary)}
+.slide-inner:has(.sig-strip){max-width:1180px}
+.letter-quote{position:relative;max-width:960px;margin:2px auto 20px;padding:17px 26px 15px 30px;border-left:3px solid var(--ft-red);border-radius:0 12px 12px 0;
+  background:var(--surface-1);font-size:15px;font-weight:500;line-height:1.65;color:var(--text-secondary)}
+.letter-quote b{color:var(--text-primary);font-weight:700}
 .letter-cite{display:block;margin-top:9px;font-size:10.5px;font-weight:600;letter-spacing:.4px;color:var(--text-dim)}
+.sig-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 14px;max-width:980px}
+.sig{font-size:11.5px;font-weight:700;letter-spacing:.3px;color:var(--text-secondary);background:var(--surface-2);border:1px solid var(--border-default);border-radius:999px;padding:5px 13px}
+.sig.ours{color:#fff;background:var(--ft-red);border-color:var(--ft-red);box-shadow:0 0 18px rgba(218,41,28,.35)}
+.sig.more{color:var(--text-dim);font-weight:600;border-style:dashed}
+.principles{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 22px;max-width:980px}
+.prin{font-size:11px;font-weight:600;color:var(--text-dim);border:1px dashed var(--border-default);border-radius:8px;padding:5px 12px}
+.owasp-why-card p.lq{color:var(--text-primary);font-size:12.5px;font-style:italic;line-height:1.5;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)}
+.owasp-why-card p.lq b{font-style:normal;font-weight:700}
 html.projector-mode .sig{border-width:1.5px}
+html.projector-mode .prin{color:var(--text-secondary)}
 /* ── THE FORK SLIDE — two animated posters, one choice ── */
 .slide-inner:has(.fork-grid){max-width:1300px}
 .fork-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin:4px 0 16px}
@@ -854,7 +862,7 @@ html.projector-mode .fp-prov,html.projector-mode .fp-actor{border-width:2px}
       </div>
     </div>
     <div class="summary-divider"></div>
-    <div class="summary-closer">How does the agent know the instruction came from the developer and not the customer? What stops a tool from answering for a tenant that didn't ask? Who sees the model spend before the invoice does?<br><br><em>A GenAI workload that can't clear its security review never reaches steady-state consumption. The gateway is what gets it shipped — and keeps it shipped as the customer adds the next agent.</em><br><br>A hundred organisations just signed their name to raising the bar on what gets built and bought. This is what that bar looks like on the thing your customer is building right now.</div>
+    <div class="summary-closer">How does the agent know the instruction came from the developer and not the customer? What stops a tool from answering for a tenant that didn't ask? Who sees the model spend before the invoice does?<br><br><em>A GenAI workload that can't clear its security review never reaches steady-state consumption. The gateway is what gets it shipped — and keeps it shipped as the customer adds the next agent.</em><br><br>We put our name to raising "the security bar for what you buy, build, and deploy, including AI-generated code." This is what that bar looks like on the thing your customer is building right now.</div>
     <div class="summary-actions">
       <button class="summary-cta secondary" id="summaryRestart">↺ Restart Talk</button>
       <button class="summary-cta" id="openTryIt">Try it in FortiAIGate →</button>
@@ -1198,7 +1206,7 @@ const NODES = [
     x:620, y:90, act:3, color:C.red, accentRgb:ACT_RGB[2],
     title:'⑪ Cross-Tenant Data Leak (LLM02)', tagLabel:'WAKE-UP CALL', tagColor:C.red,
     body:`<p>A support agent is asked, in good faith or otherwise, to "check recent orders in this region for comparison." It calls the lookup tool it was given. The tool runs the query it was handed and returns rows — including rows belonging to other customers.</p><p>The model then does its job beautifully: it summarizes them into a helpful, well-formatted answer and hands it to whoever asked. ${g('sensitive information disclosure')} — ${g('OWASP LLM02')} — delivered through a legitimate response, over an authenticated session, with a 200 status code.</p><p>Nothing in the stack flagged it, because nothing in the stack was comparing the response against who was allowed to see it.</p>`,
-    seller:`This is the finding that ends a launch. It doesn't look like a breach in any log — it looks like the product working. Multi-tenant SaaS teams feel this one immediately, because they already have a hard-won discipline about tenant scoping, and the agent just routed around it.`,
+    seller:`This is the finding that ends a launch. It doesn't look like a breach in any log — it looks like the product working. Multi-tenant SaaS teams feel this one immediately, because they already have a hard-won discipline about tenant scoping, and the agent just routed around it.<br><br><strong>Callback to the opener.</strong> The letter asks every organization to raise the bar for what they "buy, build, and deploy, <em>including AI-generated code</em>." The next example is exactly that clause: a tool an assistant wrote, reviewed by a human, shipped — and missing the one check that mattered.`,
     simBtn:{ kind:'code', cls:'code', label:'▶ See how the tool got written' }
   },
   { id:'r2', badge:'12', icon:ICONS.zapOff, label:'Injected Instruction',
@@ -1829,26 +1837,25 @@ const SLIDES = {
     </div>
     <div id="agencyStage" style="display:none"></div>
   `},
-  /* ═══ PREAMBLE — the open letter, then the pivot into what it means here ═══
-     Reported details: OpenAI's "A call for collective action on cyber defense",
-     28 Aug 2026, 100+ signatories. Verify wording against the source before
-     presenting; the quote below is as reported by SecurityWeek. */
+  /* ═══ PREAMBLE — the open letter we signed, then the pivot into what it means ═══
+     "A call for collective action on cyber defense", openai.com, 28 Aug 2026.
+     Quotes are verbatim from the letter; keep them that way. */
   letter: { accent:C.silver, html:`
-    <div class="slide-eyebrow" style="color:${C.silver}">28 AUGUST 2026 · AN OPEN LETTER</div>
-    <div class="slide-title">The industry just agreed<br>on <span class="gr">the problem</span></div>
-    <div class="slide-sub">OpenAI published <em>A call for collective action on cyber defense</em>. More than 100 organisations signed it — the cloud your customers build on, the labs that make the models, and most of the vendors in this market.</div>
+    <div class="slide-eyebrow" style="color:${C.silver}">28 AUGUST 2026 · AN OPEN LETTER — SIGNED BY FORTINET</div>
+    <div class="slide-title">"We have a <span class="gr">limited window</span><br>to strengthen cyber defenses."</div>
+    <div class="letter-quote">“In the coming months, AI-enabled cyber attacks will become far more widespread and sophisticated as models around the world become increasingly capable… Today's AI advances are already giving defenders new ways to fix weaknesses that have accumulated for years. If we act decisively, we can use the <b>defenders' window</b> to make our digital world much more secure.”<span class="letter-cite">A call for collective action on cyber defense · openai.com · 28 August 2026</span></div>
     <div class="sig-strip">
-      <span class="sig">AWS</span><span class="sig">OpenAI</span><span class="sig">Anthropic</span><span class="sig">Google</span><span class="sig">Microsoft</span><span class="sig">Cisco</span><span class="sig">IBM</span><span class="sig">Oracle</span><span class="sig">Cloudflare</span><span class="sig more">+ 100 more</span>
+      <span class="sig ours">Fortinet</span><span class="sig">AWS</span><span class="sig">OpenAI</span><span class="sig">Anthropic</span><span class="sig">Google</span><span class="sig">Microsoft</span><span class="sig">Cisco</span><span class="sig">IBM</span><span class="sig">Oracle</span><span class="sig">Cloudflare</span><span class="sig more">+ 100 more</span>
     </div>
-    <div class="letter-quote">“AI-enabled attacks will become significantly more capable in the coming months, putting hospitals, water treatment plants and internet infrastructure at increasing risk.”<span class="letter-cite">A call for collective action on cyber defense · openai.com · 28 August 2026</span></div>
-    <div class="owasp-grid">
-      <div class="owasp-item"><span class="owasp-code">01</span><span class="owasp-txt"><b>Make cyber defense a leadership priority</b> — now, not at the next planning cycle.</span></div>
-      <div class="owasp-item"><span class="owasp-code">02</span><span class="owasp-txt"><b>Fix the highest-risk weaknesses first</b> — triage by blast radius, not by ticket age.</span></div>
-      <div class="owasp-item hot"><span class="owasp-code">03</span><span class="owasp-txt"><b>Raise the security bar for what you build and buy</b> — the ask that lands on every new AI workload.</span></div>
-      <div class="owasp-item"><span class="owasp-code">04</span><span class="owasp-txt"><b>Apply compensating controls</b> where a system can't be patched without taking the service down.</span></div>
+    <div class="principles">
+      <span class="prin">Status quo security won't be enough</span><span class="prin">Empower defenders with cyber-capable AI</span><span class="prin">Mobilize a collective response</span><span class="prin">Each of us can reduce risk now</span>
     </div>
-    <div class="owasp-foot">The letter makes parallel asks of security vendors, governments, and AI developers — and commits OpenAI to subsidised defensive model access, a private weakness-reporting programme, and published security tooling.</div>
-    <div class="slide-takeaway">Every signature on that letter is about defending what already exists. <strong>The workload your customer is building this quarter isn't in that inventory yet</strong> — and it's the one with a text box on the open internet wired to their data and their tools. That's the gap we're here to talk about.</div>
+    <div class="owasp-why">
+      <div class="owasp-why-card"><h4>01 · Every organization</h4><p class="lq">“…raise the security bar for what you <b>buy, build, and deploy</b>, including <b>AI-generated code</b>.”</p><p>Your customer's new AI application is the newest thing they built, bought, and deployed — and much of it was written by a model.</p></div>
+      <div class="owasp-why-card"><h4>02 · Cybersecurity companies</h4><p class="lq">“…make AI-powered defense <b>accessible and deployable</b>… strengthening existing tools with AI, and working with technology partners to close gaps now.”</p><p>That's the commitment we signed. It's why this is a walkthrough of a control point rather than a threat briefing.</p></div>
+      <div class="owasp-why-card"><h4>04 · Frontier AI companies</h4><p class="lq">“…ensure <b>agentic identities are traceable and accountable</b>…”</p><p>Agents authenticate, inherit permissions, and act. Nothing about this works if no one can say which agent did what, on whose behalf.</p></div>
+    </div>
+    <div class="slide-takeaway">Every signature on that letter is about defending what already exists. <strong>The workload your customer is building this quarter isn't in that inventory yet</strong> — and it's the one with a text box on the open internet wired to their data and their tools. That's the gap we're here to close.</div>
   `},
 
   /* ═══ THE FORK — which AI-security problem is this customer living in? ═══ */
