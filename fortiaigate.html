@@ -620,31 +620,121 @@ svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-eve
 .tryit-catch b{color:var(--text-primary)}
 .tryit-back{display:block;margin:0 auto;font-size:13px;font-weight:600;color:var(--text-secondary);background:var(--surface-2);border:1px solid var(--border-default);border-radius:24px;padding:11px 26px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
 .tryit-back:hover{background:var(--surface-1);color:var(--text-primary)}
-/* ── THE FORK SLIDE (choose your own adventure) ── */
-.fork-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:2px 0 18px}
-.fork-card{position:relative;border:2px solid;border-radius:16px;padding:20px 22px 20px;background:rgba(255,255,255,0.02);cursor:pointer;transition:transform .3s var(--ease-out-soft),box-shadow .3s var(--ease-out-soft),background .25s}
-.fork-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-card);background:var(--surface-2)}
-.fork-card.soon{opacity:.66}
-.fork-card.soon:hover{opacity:.9}
-.fork-badge{position:absolute;top:-11px;right:18px;font-size:9px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;padding:3px 11px;border-radius:999px;background:var(--bg-dark);border:1px solid}
-.fork-dir{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px}
-.fork-card h3{font-size:17px;font-weight:800;color:#fff;line-height:1.3;margin-bottom:2px}
-.light-mode .fork-card h3{color:#1d1d1f}
-.fork-illo{width:100%;height:auto;margin:12px 0 14px;color:var(--text-dim)}
-.fork-illo .fi-lbl{font-size:8px;font-weight:800;letter-spacing:1.1px;fill:currentColor}
-.fork-illo .fi-chip{font-size:8.5px;font-weight:600;fill:var(--text-secondary)}
-.fork-li{font-size:12.5px;color:var(--text-secondary);line-height:1.55;padding:5px 0 5px 15px;border-left:2px solid var(--border-default);margin-bottom:5px}
-.fork-li strong{color:var(--text-primary)}
-.fork-meta{font-size:11.5px;color:var(--text-dim);margin-top:11px}
-.fork-meta b{color:var(--text-secondary);font-weight:700}
-.fork-cta{font-size:12.5px;font-weight:700;margin-top:12px;letter-spacing:.3px}
+/* ── THE FORK SLIDE — two animated posters, one choice ── */
+.slide-inner:has(.fork-grid){max-width:1300px}
+.fork-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin:4px 0 16px}
+.fork-poster{position:relative;border-radius:20px;overflow:hidden;border:2px solid var(--border-default);background:var(--surface-card-bg);cursor:pointer;
+  transition:transform .45s var(--ease-out-soft),box-shadow .45s var(--ease-out-soft),border-color .35s,opacity .35s,filter .35s}
+.fork-poster.out{border-color:rgba(48,127,226,0.42)}
+.fork-poster.in{border-color:rgba(60,177,126,0.55)}
+.fork-poster:hover{transform:translateY(-7px);box-shadow:var(--shadow-card)}
+.fork-poster.out:hover{border-color:rgba(48,127,226,0.95)}
+.fork-poster.in:hover{border-color:rgba(60,177,126,1)}
+/* spotlight: hovering one poster steps the other back */
+.fork-grid:hover .fork-poster{opacity:.48;filter:saturate(.5)}
+.fork-grid:hover .fork-poster:hover{opacity:1;filter:none}
+
+/* ── the scene ── */
+.fp-scene{position:relative;height:250px;overflow:hidden;transition:transform .5s var(--ease-out-soft)}
+.fork-poster:hover .fp-scene{transform:scale(1.035)}
+.fp-sky{position:absolute;inset:0}
+.fork-poster.out .fp-sky{background:radial-gradient(105% 85% at 6% 50%,rgba(48,127,226,.20),transparent 58%),linear-gradient(180deg,rgba(48,127,226,.09),transparent 72%),var(--surface-1)}
+.fork-poster.in .fp-sky{background:radial-gradient(85% 85% at 92% 50%,rgba(60,177,126,.22),transparent 60%),radial-gradient(70% 90% at 2% 50%,rgba(218,41,28,.16),transparent 62%),var(--surface-1)}
+.fp-lines{position:absolute;inset:0;opacity:.55;
+  background-image:linear-gradient(var(--border-subtle) 1px,transparent 1px),linear-gradient(90deg,var(--border-subtle) 1px,transparent 1px);background-size:36px 36px}
+.fp-vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(125% 105% at 50% 50%,transparent 42%,rgba(0,0,0,.5))}
+.light-mode .fp-vig{background:radial-gradient(125% 105% at 50% 50%,transparent 52%,rgba(0,0,0,.09))}
+.fp-tag{position:absolute;top:15px;font-size:9px;font-weight:800;letter-spacing:1.6px;color:var(--text-dim);z-index:3}
+.fp-tag-l{left:22px}
+.fp-tag-r{right:22px}
+
+/* the company: a lit block of windows */
+.fp-org{position:absolute;left:26px;top:50%;transform:translateY(-50%);width:112px;height:130px;border-radius:13px;
+  border:1.6px solid var(--border-strong);background:var(--surface-2);box-shadow:var(--shadow-lift);
+  display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:8px;padding:14px;z-index:2}
+.fp-win{border-radius:3px;background:var(--ft-blue);opacity:.28;animation:fp-win 4.4s ease-in-out var(--wd) infinite}
+@keyframes fp-win{0%,100%{opacity:.22}45%{opacity:.85}}
+
+/* public models: a soft, drifting cloud */
+.fp-cloud{position:absolute;right:16px;top:50%;width:196px;height:132px;transform:translateY(-50%);z-index:1;animation:fp-float 11s ease-in-out infinite;
+  background:radial-gradient(closest-side,rgba(162,178,200,.30),transparent) 12% 62%/122px 88px no-repeat,
+             radial-gradient(closest-side,rgba(162,178,200,.26),transparent) 56% 30%/138px 100px no-repeat,
+             radial-gradient(closest-side,rgba(162,178,200,.20),transparent) 92% 66%/116px 82px no-repeat}
+@keyframes fp-float{0%,100%{transform:translate(0,-50%)}50%{transform:translate(-9px,calc(-50% - 7px))}}
+
+/* the public: a small crowd, one of them not a customer */
+.fp-crowd{position:absolute;left:20px;top:50%;transform:translateY(-50%);display:grid;grid-template-columns:1fr 1fr;gap:13px 11px;z-index:2}
+.fp-face{width:19px;height:19px;border-radius:50%;background:var(--text-dim);opacity:.65;animation:fp-bob 3.6s ease-in-out var(--fd) infinite;
+  box-shadow:0 9px 0 -3px var(--text-dim)}
+.fp-face.bad{background:var(--ft-red);opacity:1;box-shadow:0 9px 0 -3px var(--ft-red),0 0 16px rgba(218,41,28,.7)}
+@keyframes fp-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+/* their environment: a bounded box with the model glowing inside */
+.fp-vault{position:absolute;right:22px;top:50%;transform:translateY(-50%);width:186px;height:172px;border-radius:17px;z-index:2;
+  border:2px solid rgba(60,177,126,.55);background:rgba(60,177,126,.07);overflow:hidden}
+.fp-core{position:absolute;inset:0;margin:auto;width:76px;height:76px;border-radius:19px;display:flex;align-items:center;justify-content:center;
+  border:2px solid rgba(60,177,126,.85);background:rgba(60,177,126,.16);animation:fp-pulse 3.2s ease-in-out infinite}
+.fp-core svg{width:32px;height:32px;color:var(--ft-green);opacity:.95}
+@keyframes fp-pulse{0%,82%,100%{box-shadow:0 0 0 rgba(60,177,126,0);border-color:rgba(60,177,126,.85)}
+  90%{box-shadow:0 0 36px rgba(218,41,28,.8);border-color:rgba(218,41,28,.95);background:rgba(218,41,28,.18)}}
+.fp-ring{position:absolute;inset:0;margin:auto;width:76px;height:76px;border-radius:22px;border:2px solid rgba(218,41,28,.6);opacity:0;animation:fp-ripple 3.2s ease-out infinite}
+@keyframes fp-ripple{0%,86%{transform:scale(.85);opacity:0}92%{opacity:.75}100%{transform:scale(2.15);opacity:0}}
+.fp-brick{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(60,177,126,.55),transparent);top:0;animation:fp-scan 5.5s linear var(--bd) infinite}
+@keyframes fp-scan{0%{top:-2%;opacity:0}12%{opacity:.9}88%{opacity:.9}100%{top:102%;opacity:0}}
+
+/* the traffic itself */
+.fp-mote{position:absolute;left:var(--x0);top:var(--t);width:9px;height:9px;border-radius:3px;z-index:3;will-change:transform,opacity;
+  background:var(--ft-blue);box-shadow:0 0 11px rgba(48,127,226,.75);animation:fp-drift var(--dur) linear var(--del) infinite}
+.fork-poster.in .fp-mote{border-radius:50%;background:var(--ft-silver);box-shadow:0 0 11px rgba(162,178,200,.6)}
+.fork-poster.in .fp-mote.bad{width:11px;height:11px;background:var(--ft-red);box-shadow:0 0 16px rgba(218,41,28,.9)}
+@keyframes fp-drift{
+  0%{transform:translate3d(0,0,0) scale(.6);opacity:0}
+  12%{transform:translate3d(calc(var(--dx)*.12),calc(var(--dy)*.12),0) scale(1);opacity:.95}
+  78%{opacity:.95}
+  100%{transform:translate3d(var(--dx),var(--dy),0) scale(.75);opacity:0}}
+/* the intruder reaches the core at 88% — the same beat the core flashes on */
+.fork-poster.in .fp-mote.bad{animation-name:fp-strike}
+@keyframes fp-strike{
+  0%{transform:translate3d(0,0,0) scale(.5);opacity:0}
+  10%{transform:translate3d(calc(var(--dx)*.1),0,0) scale(1);opacity:1}
+  84%{transform:translate3d(calc(var(--dx)*.96),var(--dy),0) scale(1.05);opacity:1}
+  88%{transform:translate3d(var(--dx),var(--dy),0) scale(1.5);opacity:1}
+  96%,100%{transform:translate3d(var(--dx),var(--dy),0) scale(.4);opacity:0}}
+
+/* ── the copy under the scene ── */
+.fork-badge{position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:4;font-size:9px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;
+  padding:4px 12px;border-radius:999px;background:var(--surface-glass-bg);border:1px solid;backdrop-filter:blur(8px)}
+.fp-body{padding:20px 24px 20px;position:relative;z-index:2}
+.fp-dir{font-size:10px;font-weight:800;letter-spacing:2.2px;text-transform:uppercase;margin-bottom:6px}
+.fp-body h3{font-size:23px;font-weight:800;color:#fff;line-height:1.25;margin-bottom:9px}
+.light-mode .fp-body h3{color:#1d1d1f}
+.fp-line{font-size:13.5px;color:var(--text-secondary);line-height:1.6;min-height:66px}
+.fp-line strong{color:var(--text-primary)}
+.fp-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.fp-chips span{font-size:11px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border-default);color:var(--text-secondary)}
+.fp-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--border-subtle);padding-top:13px}
+.fp-owner{font-size:11.5px;color:var(--text-dim)}
+.fp-go{font-size:12.5px;font-weight:700;letter-spacing:.2px;opacity:.72;transform:translateX(-5px);transition:opacity .35s,transform .35s var(--ease-out-soft)}
+.fork-poster:hover .fp-go{opacity:1;transform:translateX(0)}
+
 .fork-back{margin-left:10px;font-family:inherit;font-size:12px;font-weight:600;color:var(--text-primary);background:var(--surface-2);border:1px solid var(--border-strong);border-radius:8px;padding:6px 13px;cursor:pointer;transition:all .25s}
-.fork-back:hover{background:var(--surface-1);border-color:var(--border-strong);transform:translateY(-1px)}
+.fork-back:hover{background:var(--surface-1);transform:translateY(-1px)}
 .pl-inline{font-family:'SF Mono',Menlo,monospace;font-size:11px;color:var(--text-primary);background:var(--surface-2);padding:1px 5px;border-radius:4px}
 .pl-ok{color:var(--ft-green)}
-html.projector-mode .fork-card{border-width:2.5px}
-html.projector-mode .fork-card.soon{opacity:.85}
-html.projector-mode .fork-illo{color:var(--text-secondary)}
+
+html.projector-mode .fp-lines{opacity:.9}
+html.projector-mode .fp-tag{color:var(--text-secondary)}
+html.projector-mode .fp-mote{box-shadow:0 0 16px currentColor}
+html.projector-mode .fp-vig{background:none}
+/* a projector at the back of a room loses subtle motion — hold the scene brighter */
+html.projector-mode .fp-win{opacity:.55}
+
+@media (prefers-reduced-motion: reduce){
+  .fp-mote,.fp-win,.fp-face,.fp-cloud,.fp-core,.fp-ring,.fp-brick{animation:none}
+  .fp-mote{opacity:.8;transform:translate3d(calc(var(--dx)*.55),0,0)}
+  .fp-ring{opacity:0}
+  .fork-poster:hover .fp-scene{transform:none}
+}
 </style>
 </head>
 <body>
@@ -1607,6 +1697,24 @@ function navButtonsHTML(accent){
     </div>`;
 }
 
+/* Mote field for the fork posters — deterministic, so the scene looks identical
+   every time the slide re-renders. Negative delays start each mote mid-flight, so
+   the field is already full on the first frame. Travel distances are in px: the
+   deck is a fixed 1920×1080 canvas, so the poster width never changes. */
+function motes(n, o){
+  const { dx=380, x0=150, base=3.4, cls='', top=[12,88] } = o || {};
+  let out = '';
+  for (let i = 0; i < n; i++){
+    const f = n > 1 ? i / (n - 1) : 0;
+    const t = (top[0] + f * (top[1] - top[0]) + ((i % 3) - 1) * 3.5).toFixed(1);
+    const dur = (base + ((i * 7) % 5) * 0.42).toFixed(2);
+    const del = ((i * 0.53) % base).toFixed(2);
+    const dy = (((i % 5) - 2) * 7).toFixed(0);
+    out += `<i class="fp-mote ${cls}" style="--t:${t}%;--x0:${x0}px;--dx:${dx}px;--dy:${dy}px;--dur:${dur}s;--del:-${del}s"></i>`;
+  }
+  return out;
+}
+
 /* ═══ PRESENTER SLIDES (non-diagram stops) ═══ */
 const SLIDES = {
   agency: { accent:C.teal, html:`
@@ -1653,82 +1761,62 @@ const SLIDES = {
   fork: { accent:C.silver, html:`
     <div class="slide-eyebrow" style="color:${C.silver}">CHOOSE THE CONVERSATION</div>
     <div class="slide-title">Two directions. <span class="gr">Two different problems.</span></div>
-    <div class="slide-sub">Both get called "AI security". They are not the same control, not the same buyer, and not the same conversation. <strong>Click the path your customer is actually living in.</strong></div>
+    <div class="slide-sub">Both get called "AI security". Different control, different buyer, different conversation. <strong>Click the one your customer is living in.</strong></div>
+
     <div class="fork-grid">
 
-      <div class="fork-card soon" style="border-color:rgba(48,127,226,0.42)" onclick="choosePath('data')">
-        <span class="fork-badge" style="color:var(--ft-blue);border-color:rgba(48,127,226,0.5)">Path in development</span>
-        <div class="fork-dir" style="color:var(--ft-blue)">Inside → out</div>
-        <h3>Securing their <span style="color:var(--ft-blue)">data</span> from public models</h3>
-        <svg class="fork-illo" viewBox="0 0 320 128" role="img" aria-label="Company data flowing outward to public AI models">
-          <text x="63" y="12" text-anchor="middle" class="fi-lbl">THE COMPANY</text>
-          <rect x="4" y="20" width="118" height="82" rx="11" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".5"/>
-          <g fill="currentColor" opacity=".75">
-            <circle cx="34" cy="46" r="6"/><path d="M24 64c0-5.5 4.5-9 10-9s10 3.5 10 9z"/>
-            <circle cx="63" cy="46" r="6"/><path d="M53 64c0-5.5 4.5-9 10-9s10 3.5 10 9z"/>
-            <circle cx="92" cy="46" r="6"/><path d="M82 64c0-5.5 4.5-9 10-9s10 3.5 10 9z"/>
-          </g>
-          <text x="63" y="88" text-anchor="middle" class="fi-chip">code · PII · telemetry</text>
-          <line x1="128" y1="61" x2="186" y2="61" stroke="#307FE2" stroke-width="2.2" stroke-dasharray="6 5"/>
-          <polygon points="186,54 199,61 186,68" fill="#307FE2"/>
-          <g fill="#307FE2" opacity=".9"><rect x="134" y="42" width="9" height="9" rx="2"/><rect x="152" y="42" width="9" height="9" rx="2"/><rect x="170" y="42" width="9" height="9" rx="2"/></g>
-          <text x="261" y="12" text-anchor="middle" class="fi-lbl">PUBLIC MODELS</text>
-          <rect x="202" y="20" width="114" height="82" rx="11" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".5"/>
-          <g fill="none" stroke="currentColor" stroke-width="1.4" opacity=".8">
-            <rect x="216" y="34" width="86" height="18" rx="5"/><rect x="216" y="58" width="86" height="18" rx="5"/>
-          </g>
-          <text x="259" y="46" text-anchor="middle" class="fi-chip">ChatGPT · Copilot</text>
-          <text x="259" y="70" text-anchor="middle" class="fi-chip">someone else's cloud</text>
-          <text x="259" y="94" text-anchor="middle" class="fi-chip">outside their control</text>
-        </svg>
-        <div class="fork-li">Employees and internal apps sending company data to models nobody governs.</div>
-        <div class="fork-li">The asset at risk is <strong>data leaving</strong> — source code, customer records, security telemetry.</div>
-        <div class="fork-li">The control is egress: discovery, DLP, sanctioned-tool policy.</div>
-        <div class="fork-meta"><b>Who owns it:</b> the CISO, security &amp; IT</div>
-        <div class="fork-cta" style="color:var(--ft-blue)">Preview this path →</div>
+      <div class="fork-poster out" onclick="choosePath('data')">
+        <div class="fp-scene" aria-hidden="true">
+          <div class="fp-sky"></div><div class="fp-lines"></div>
+          <div class="fp-tag fp-tag-l">THE COMPANY</div>
+          <div class="fp-org">${Array.from({length:12}, (_,i) => `<i class="fp-win" style="--wd:${(i*0.37).toFixed(2)}s"></i>`).join('')}</div>
+          <div class="fp-cloud"></div>
+          <div class="fp-tag fp-tag-r">PUBLIC MODELS</div>
+          ${motes(13, { x0:150, dx:395, base:3.4 })}
+          <div class="fp-vig"></div>
+        </div>
+        <span class="fork-badge" style="color:var(--ft-blue);border-color:rgba(48,127,226,0.55)">Path in development</span>
+        <div class="fp-body">
+          <div class="fp-dir" style="color:var(--ft-blue)">Inside → out</div>
+          <h3>Their <span style="color:var(--ft-blue)">data</span> walks out the door</h3>
+          <p class="fp-line">Employees and internal apps feeding company data to models nobody governs. What's at risk is everything that leaves.</p>
+          <div class="fp-chips"><span>Shadow AI discovery</span><span>Prompt DLP</span><span>Sanctioned tools</span></div>
+          <div class="fp-foot"><span class="fp-owner">Bought by the CISO</span><span class="fp-go" style="color:var(--ft-blue)">Preview this path →</span></div>
+        </div>
       </div>
 
-      <div class="fork-card live" style="border-color:rgba(60,177,126,0.6)" onclick="choosePath('models')">
-        <span class="fork-badge" style="color:var(--ft-green);border-color:rgba(60,177,126,0.55)">Today's walkthrough</span>
-        <div class="fork-dir" style="color:var(--ft-green)">Outside → in</div>
-        <h3>Securing their <span style="color:var(--ft-green)">models</span> from public actors</h3>
-        <svg class="fork-illo" viewBox="0 0 320 128" role="img" aria-label="Public users and attackers sending prompts inward to models the customer runs">
-          <text x="63" y="12" text-anchor="middle" class="fi-lbl">THE PUBLIC</text>
-          <rect x="4" y="20" width="118" height="82" rx="11" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".5"/>
-          <g fill="currentColor" opacity=".7">
-            <circle cx="34" cy="46" r="6"/><path d="M24 64c0-5.5 4.5-9 10-9s10 3.5 10 9z"/>
-            <circle cx="63" cy="46" r="6"/><path d="M53 64c0-5.5 4.5-9 10-9s10 3.5 10 9z"/>
-          </g>
-          <g fill="#DA291C"><circle cx="92" cy="46" r="6"/><path d="M82 64c0-5.5 4.5-9 10-9s10 3.5 10 9z"/></g>
-          <text x="63" y="88" text-anchor="middle" class="fi-chip">customers · partners · anyone</text>
-          <line x1="128" y1="52" x2="186" y2="52" stroke="currentColor" stroke-width="2" opacity=".55"/>
-          <polygon points="186,46 197,52 186,58" fill="currentColor" opacity=".55"/>
-          <line x1="128" y1="72" x2="186" y2="72" stroke="#DA291C" stroke-width="2.2" stroke-dasharray="6 5"/>
-          <polygon points="186,65 199,72 186,79" fill="#DA291C"/>
-          <text x="157" y="94" text-anchor="middle" class="fi-chip">prompts &amp; documents</text>
-          <text x="261" y="12" text-anchor="middle" class="fi-lbl">THEIR AWS ENVIRONMENT</text>
-          <rect x="202" y="20" width="114" height="82" rx="11" fill="none" stroke="#3CB17E" stroke-width="1.8" opacity=".75"/>
-          <g fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85">
-            <rect x="214" y="32" width="90" height="19" rx="5"/>
-            <rect x="214" y="56" width="41" height="19" rx="5"/>
-            <rect x="263" y="56" width="41" height="19" rx="5"/>
-          </g>
-          <text x="259" y="45" text-anchor="middle" class="fi-chip">their model</text>
-          <text x="234" y="69" text-anchor="middle" class="fi-chip">data</text>
-          <text x="283" y="69" text-anchor="middle" class="fi-chip">tools</text>
-          <text x="259" y="94" text-anchor="middle" class="fi-chip">their account · their liability</text>
-        </svg>
-        <div class="fork-li">The AI applications your customer <strong>builds and exposes</strong> — support agents, copilots, chatbots.</div>
-        <div class="fork-li">The asset at risk is <strong>everything the agent can reach</strong>: the model, the data, the tools, the bill.</div>
-        <div class="fork-li">The control is ingress: inspect the prompt, validate the action, meter the endpoint.</div>
-        <div class="fork-meta"><b>Who owns it:</b> the builder — app team, platform, and the AWS account</div>
-        <div class="fork-cta" style="color:var(--ft-green)">Take this path →</div>
+      <div class="fork-poster in" onclick="choosePath('models')">
+        <div class="fp-scene" aria-hidden="true">
+          <div class="fp-sky"></div><div class="fp-lines"></div>
+          <div class="fp-tag fp-tag-l">THE PUBLIC</div>
+          <div class="fp-crowd">
+            <i class="fp-face" style="--fd:0s"></i><i class="fp-face" style="--fd:.6s"></i>
+            <i class="fp-face bad" style="--fd:.3s"></i><i class="fp-face" style="--fd:.9s"></i>
+            <i class="fp-face" style="--fd:1.2s"></i>
+          </div>
+          <div class="fp-vault">
+            <div class="fp-ring"></div>
+            <div class="fp-core">${ICONS.cpu}</div>
+            <i class="fp-brick" style="--bd:0s"></i><i class="fp-brick" style="--bd:.9s"></i>
+          </div>
+          <div class="fp-tag fp-tag-r">THEIR ENVIRONMENT</div>
+          ${motes(11, { x0:60, dx:400, base:3.2, top:[16,84] })}
+          <i class="fp-mote bad" style="--t:47%;--x0:60px;--dx:452px;--dy:2px;--dur:3.2s;--del:0s"></i>
+          <div class="fp-vig"></div>
+        </div>
+        <span class="fork-badge" style="color:var(--ft-green);border-color:rgba(60,177,126,0.6)">Today's walkthrough</span>
+        <div class="fp-body">
+          <div class="fp-dir" style="color:var(--ft-green)">Outside → in</div>
+          <h3>Strangers reach their <span style="color:var(--ft-green)">models</span></h3>
+          <p class="fp-line">The AI applications your customer builds and exposes. What's at risk is everything the agent can reach — data, tools, and the bill.</p>
+          <div class="fp-chips"><span>Prompt injection</span><span>Cross-tenant leaks</span><span>Tool abuse</span></div>
+          <div class="fp-foot"><span class="fp-owner">Bought by the builder</span><span class="fp-go" style="color:var(--ft-green)">Take this path →</span></div>
+        </div>
       </div>
 
     </div>
-    <div class="slide-takeaway">The distinction matters commercially: the first path is a security team buying a guardrail for tools employees already use. The second is a <strong>product team unblocking a launch</strong> — a workload that can't clear security review never reaches steady-state consumption.</div>
+    <div class="slide-takeaway">The first is a security team buying a guardrail for tools their people already use. The second is a <strong>product team unblocking a launch</strong> — and a workload that can't clear security review never reaches steady-state consumption.</div>
   `},
-
   /* Path 1 stub — the outbound-data story, not yet written out. */
   dataSoon: { accent:C.blue, html:`
     <div class="slide-eyebrow" style="color:${C.blue}">PATH 1 · INSIDE → OUT</div>
