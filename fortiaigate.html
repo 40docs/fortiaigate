@@ -620,6 +620,14 @@ svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-eve
 .tryit-catch b{color:var(--text-primary)}
 .tryit-back{display:block;margin:0 auto;font-size:13px;font-weight:600;color:var(--text-secondary);background:var(--surface-2);border:1px solid var(--border-default);border-radius:24px;padding:11px 26px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
 .tryit-back:hover{background:var(--surface-1);color:var(--text-primary)}
+/* ── PREAMBLE SLIDE (the open letter) ── */
+.sig-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 20px;max-width:900px}
+.sig{font-size:11.5px;font-weight:700;letter-spacing:.3px;color:var(--text-secondary);background:var(--surface-2);border:1px solid var(--border-default);border-radius:999px;padding:5px 13px}
+.sig.more{color:var(--text-dim);font-weight:600;border-style:dashed}
+.letter-quote{position:relative;max-width:860px;margin:0 auto 22px;padding:18px 26px 16px 30px;border-left:3px solid var(--ft-red);border-radius:0 12px 12px 0;
+  background:var(--surface-1);font-size:16px;font-weight:600;line-height:1.6;color:var(--text-primary)}
+.letter-cite{display:block;margin-top:9px;font-size:10.5px;font-weight:600;letter-spacing:.4px;color:var(--text-dim)}
+html.projector-mode .sig{border-width:1.5px}
 /* ── THE FORK SLIDE — two animated posters, one choice ── */
 .slide-inner:has(.fork-grid){max-width:1300px}
 .fork-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin:4px 0 16px}
@@ -846,7 +854,7 @@ html.projector-mode .fp-prov,html.projector-mode .fp-actor{border-width:2px}
       </div>
     </div>
     <div class="summary-divider"></div>
-    <div class="summary-closer">How does the agent know the instruction came from the developer and not the customer? What stops a tool from answering for a tenant that didn't ask? Who sees the model spend before the invoice does?<br><br><em>A GenAI workload that can't clear its security review never reaches steady-state consumption. The gateway is what gets it shipped — and keeps it shipped as the customer adds the next agent.</em></div>
+    <div class="summary-closer">How does the agent know the instruction came from the developer and not the customer? What stops a tool from answering for a tenant that didn't ask? Who sees the model spend before the invoice does?<br><br><em>A GenAI workload that can't clear its security review never reaches steady-state consumption. The gateway is what gets it shipped — and keeps it shipped as the customer adds the next agent.</em><br><br>A hundred organisations just signed their name to raising the bar on what gets built and bought. This is what that bar looks like on the thing your customer is building right now.</div>
     <div class="summary-actions">
       <button class="summary-cta secondary" id="summaryRestart">↺ Restart Talk</button>
       <button class="summary-cta" id="openTryIt">Try it in FortiAIGate →</button>
@@ -1297,6 +1305,7 @@ const visited = new Set();
    AI-security problems this customer actually has. Today only the "protect the
    models they build" path is written out; the outbound-data path is a stub. */
 const FLOW_HEAD = [
+  { type:'slide', id:'letter', color:C.silver },
   { type:'slide', id:'agency', color:C.teal },
   { type:'slide', id:'fork',   color:C.silver },
 ];
@@ -1820,6 +1829,28 @@ const SLIDES = {
     </div>
     <div id="agencyStage" style="display:none"></div>
   `},
+  /* ═══ PREAMBLE — the open letter, then the pivot into what it means here ═══
+     Reported details: OpenAI's "A call for collective action on cyber defense",
+     28 Aug 2026, 100+ signatories. Verify wording against the source before
+     presenting; the quote below is as reported by SecurityWeek. */
+  letter: { accent:C.silver, html:`
+    <div class="slide-eyebrow" style="color:${C.silver}">28 AUGUST 2026 · AN OPEN LETTER</div>
+    <div class="slide-title">The industry just agreed<br>on <span class="gr">the problem</span></div>
+    <div class="slide-sub">OpenAI published <em>A call for collective action on cyber defense</em>. More than 100 organisations signed it — the cloud your customers build on, the labs that make the models, and most of the vendors in this market.</div>
+    <div class="sig-strip">
+      <span class="sig">AWS</span><span class="sig">OpenAI</span><span class="sig">Anthropic</span><span class="sig">Google</span><span class="sig">Microsoft</span><span class="sig">Cisco</span><span class="sig">IBM</span><span class="sig">Oracle</span><span class="sig">Cloudflare</span><span class="sig more">+ 100 more</span>
+    </div>
+    <div class="letter-quote">“AI-enabled attacks will become significantly more capable in the coming months, putting hospitals, water treatment plants and internet infrastructure at increasing risk.”<span class="letter-cite">A call for collective action on cyber defense · openai.com · 28 August 2026</span></div>
+    <div class="owasp-grid">
+      <div class="owasp-item"><span class="owasp-code">01</span><span class="owasp-txt"><b>Make cyber defense a leadership priority</b> — now, not at the next planning cycle.</span></div>
+      <div class="owasp-item"><span class="owasp-code">02</span><span class="owasp-txt"><b>Fix the highest-risk weaknesses first</b> — triage by blast radius, not by ticket age.</span></div>
+      <div class="owasp-item hot"><span class="owasp-code">03</span><span class="owasp-txt"><b>Raise the security bar for what you build and buy</b> — the ask that lands on every new AI workload.</span></div>
+      <div class="owasp-item"><span class="owasp-code">04</span><span class="owasp-txt"><b>Apply compensating controls</b> where a system can't be patched without taking the service down.</span></div>
+    </div>
+    <div class="owasp-foot">The letter makes parallel asks of security vendors, governments, and AI developers — and commits OpenAI to subsidised defensive model access, a private weakness-reporting programme, and published security tooling.</div>
+    <div class="slide-takeaway">Every signature on that letter is about defending what already exists. <strong>The workload your customer is building this quarter isn't in that inventory yet</strong> — and it's the one with a text box on the open internet wired to their data and their tools. That's the gap we're here to talk about.</div>
+  `},
+
   /* ═══ THE FORK — which AI-security problem is this customer living in? ═══ */
   fork: { accent:C.silver, html:`
     <div class="slide-eyebrow" style="color:${C.silver}">CHOOSE THE CONVERSATION</div>
