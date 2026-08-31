@@ -4,10 +4,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A single-file presenter deck: `fortiaigate.html` (~2,600 lines) containing all CSS, HTML, and JS
-inline. It is a live-demo sales/technical talk aimed at **AWS sellers** — "Securing the AI They
-Ship" — about the GenAI workloads their customers build on AWS, framed against the OWASP Top 10
-for LLMs. The `main` branch holds the earlier SOC-centric version (tag `v1-soc-storyline`). There is no build step, no package manager, no tests, no
+A single-file presenter deck: `fortiaigate.html` (~2,700 lines) containing all CSS, HTML, and JS
+inline. It is a live-demo sales/technical talk — "Securing AI Agents" — about GenAI workloads
+built on AWS, framed against the OWASP Top 10 for LLMs. The `main` branch holds the earlier
+SOC-centric version (tag `v1-soc-storyline`).
+
+**Voice:** the deck talks about the workload, not about a third party. No "your customer's data",
+no "the AI they ship" — it's "the agent", "the application", "the AWS environment". The shared-
+customer framing is something the presenter says out loud; it stays out of the copy. `seller` /
+`sellerTip` fields are presenter notes and may address the room directly ("ask the team…"), but
+they follow the same rule. Second-person "they/their" is reserved for actual third parties in the
+story: attackers, end users, guardrail products, and quoted research. There is no build step, no package manager, no tests, no
 dependencies except the Google Fonts `Inter` stylesheet. `assets/` holds Fortinet SVG icons and
 product screenshots referenced by relative path.
 
