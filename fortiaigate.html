@@ -39,6 +39,8 @@ try { if (localStorage.getItem('fag-theme') === 'dark') document.documentElement
   --surface-card-bg: rgba(14,16,24,0.78);
   --shadow-card: 0 18px 60px rgba(0,0,0,0.55), 0 2px 0 rgba(255,255,255,0.04) inset;
   --shadow-lift: 0 8px 28px rgba(0,0,0,0.45);
+  /* incident-stream colours for the breach cinematic */
+  --st1:#DA291C; --st2:#ff2d2d; --st3:#A2B2C8; --st4:#ff6b6b; --st5:#2CCCD3;
   --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
   --t-page: 480ms var(--ease-out-soft);
 }
@@ -59,6 +61,7 @@ try { if (localStorage.getItem('fag-theme') === 'dark') document.documentElement
   --surface-card-bg: rgba(255,255,255,0.92);
   --shadow-card: 0 18px 60px rgba(0,0,0,0.14), 0 1px 0 rgba(0,0,0,0.04) inset;
   --shadow-lift: 0 8px 24px rgba(0,0,0,0.10);
+  --st1:#b81d12; --st2:#d92b1c; --st3:#5b6b80; --st4:#c2453a; --st5:#0f8f96;
 }
 /* ── PROJECTOR / HIGH-CONTRAST MODE ──
    Boosts text brightness, borders, surfaces and diagram lines so the deck stays
@@ -502,13 +505,14 @@ svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-eve
 .mesh-node.on{color:#04232b;background:var(--ft-teal);border-color:var(--ft-teal);transform:scale(1.05)}
 .mesh-node.on .mn-sub{color:rgba(4,35,43,0.7)}
 .mesh-arrow{color:var(--text-dim);font-weight:800;font-size:15px}
-.mesh-cap{text-align:center;font-size:13.5px;color:var(--text-secondary);line-height:1.7;max-width:760px;margin:4px auto 0;border-top:1px solid rgba(255,255,255,0.08);padding-top:15px}
+.mesh-cap{text-align:center;font-size:13.5px;color:var(--text-secondary);line-height:1.7;max-width:760px;margin:4px auto 0;border-top:1px solid var(--border-subtle);padding-top:15px}
 .mesh-cap strong{color:var(--text-primary)}
 .light-mode .demo-back,.light-mode .skip-btn{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.12)}
 .light-mode .mesh-node{border-color:rgba(0,0,0,0.12)}
 /* SOC sim overlay + variants */
-.sim-overlay{position:fixed;inset:0;z-index:550;background:rgba(4,6,12,0.97);backdrop-filter:blur(18px);opacity:0;pointer-events:none;transition:opacity .3s;overflow-y:auto;padding:54px 28px 40px}
+.sim-overlay{position:fixed;inset:0;z-index:550;background:var(--bg-dark);background-image:var(--bg-grad);opacity:0;pointer-events:none;transition:opacity .3s;overflow-y:auto;padding:54px 28px 40px}
 .sim-overlay.show{opacity:1;pointer-events:auto}
+
 .sim-close{position:fixed;top:16px;right:20px;width:34px;height:34px;border-radius:50%;background:var(--border-subtle);border:1px solid rgba(255,255,255,0.14);color:var(--text-secondary);font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:551;transition:all .2s}
 .sim-close:hover{background:rgba(255,255,255,0.14);color:#fff}
 .sim-inner{max-width:860px;width:100%;margin:0 auto;position:relative;z-index:1}
@@ -630,46 +634,37 @@ svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-eve
 .tryit-back{display:block;margin:0 auto;font-size:13px;font-weight:600;color:var(--text-secondary);background:var(--surface-2);border:1px solid var(--border-default);border-radius:24px;padding:11px 26px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
 .tryit-back:hover{background:var(--surface-1);color:var(--text-primary)}
 
-/* ── THE FULL-SCREEN EXAMPLES ARE A CINEMA SCREEN ──
-   The overlay is a near-black panel in every theme, so the palette *inside* it is
-   pinned to the dark token values regardless of .light-mode. Without this, light
-   mode paints dark-grey text and white glass cards onto a black background, which
-   is what made the agent examples hard to read. Note the same components
-   (.demo-stage, .astep, .demo-q…) are also used inline on the agency slide, where
-   they must follow the theme — which is why this is scoped to the overlay. */
-.sim-overlay{
-  --text-primary:#f5f5f7;
-  --text-secondary:#9ba0aa;      /* a touch brighter than the page default: this is read at distance */
-  --text-dim:#767b86;
-  --ft-grey:#75787B;
-  --border-subtle:rgba(255,255,255,0.08);
-  --border-default:rgba(255,255,255,0.14);
-  --border-strong:rgba(255,255,255,0.22);
-  --surface-1:rgba(255,255,255,0.04);
-  --surface-2:rgba(255,255,255,0.08);
-  --surface-glass-bg:rgba(18,20,28,0.72);
-  --surface-glass-border:rgba(255,255,255,0.12);
-  --surface-card-bg:rgba(14,16,24,0.85);
-  --shadow-card:0 18px 60px rgba(0,0,0,0.55), 0 2px 0 rgba(255,255,255,0.04) inset;
-  --shadow-lift:0 8px 28px rgba(0,0,0,0.45);
-}
-html.projector-mode .sim-overlay{
-  --text-secondary:#d6d9e0;
-  --text-dim:#a8adb8;
-  --border-subtle:rgba(255,255,255,0.22);
-  --border-default:rgba(255,255,255,0.34);
-  --border-strong:rgba(255,255,255,0.50);
-  --surface-1:rgba(255,255,255,0.09);
-  --surface-2:rgba(255,255,255,0.15);
-  --surface-glass-bg:rgba(20,22,30,0.95);
-  --surface-glass-border:rgba(255,255,255,0.30);
-}
-/* light-mode component patches must not leak into the overlay (equal specificity, later wins) */
-.sim-overlay .demo-back,.sim-overlay .skip-btn{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.16)}
-.sim-overlay .demo-back:hover,.sim-overlay .skip-btn:hover{background:rgba(255,255,255,0.14)}
-.sim-overlay .mesh-node{border-color:rgba(255,255,255,0.16)}
-.sim-overlay .astep{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.09)}
-.sim-overlay .tryit-payload{color:#d6dcea;background:rgba(0,0,0,0.4)}
+/* The breach reveal is the one deliberately dark surface — a blackout beat. Its
+   own text tokens are pinned so they stay legible on it in any theme. */
+.attacker-reveal{--text-secondary:#c9ccd4;--text-primary:#f5f5f7}
+
+/* ── LIGHT TREATMENTS FOR THE EXAMPLE SURFACES ──
+   The editor, log blocks and payload panels were authored dark. In light mode they
+   get a light-editor palette rather than a dark panel floating on a white deck. */
+.light-mode .editor{background:#ffffff}
+.light-mode .ed-tab{background:rgba(0,0,0,0.035);border-bottom-color:rgba(0,0,0,0.09)}
+.light-mode .ed-code{color:#24292f}
+.light-mode .ed-gutter{color:#8c959f}
+.light-mode .ed-code .kw{color:#cf222e}
+.light-mode .ed-code .st{color:#0a3069}
+.light-mode .ed-code .fn{color:#8250df}
+.light-mode .ed-code .cm{color:#6e7781}
+.light-mode .ed-code .nm{color:#953800}
+.light-mode .ed-secret{color:#b42318;background:rgba(218,41,28,0.10)}
+.light-mode .ed-ghost{color:#7d8590}
+.light-mode .log-block{color:#3a3a3c;background:rgba(0,0,0,0.045);border-color:rgba(0,0,0,0.12)}
+.light-mode .log-mal{color:#b42318;background:rgba(218,41,28,0.10)}
+.light-mode .payload code{color:#24292f;background:rgba(0,0,0,0.05)}
+.light-mode .payload .pl-secret{color:#b42318;background:rgba(218,41,28,0.12)}
+.light-mode .pl-ok{color:#0f7a4f}
+.light-mode .sim-close{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.14)}
+.light-mode .sim-close:hover{background:rgba(0,0,0,0.10);color:#1d1d1f}
+.light-mode .demo-back{border-color:rgba(0,0,0,0.12)}
+.light-mode .demo-back:hover{background:rgba(0,0,0,0.09)}
+.light-mode .skip-btn:hover{background:rgba(0,0,0,0.09)}
+.light-mode .mesh-node.on .mn-sub{color:rgba(4,35,43,0.75)}
+html.projector-mode.light-mode .ed-gutter{color:#5c6570}
+html.projector-mode.light-mode .ed-ghost{color:#5f6772}
 
 /* ── THREE-PATH DIAGRAM (guardrails slide) ── */
 .gd{display:block;width:100%;max-width:1000px;margin:2px auto 16px;height:auto;color:var(--text-dim)}
@@ -939,7 +934,7 @@ html.projector-mode .fp-prov,html.projector-mode .fp-actor{border-width:2px}
       </div>
     </div>
     <div class="summary-divider"></div>
-    <div class="summary-closer">How does the agent know the instruction came from the developer and not the customer? What stops a tool from answering for a tenant that didn't ask? Who sees the model spend before the invoice does?<br><br><em>A GenAI workload that can't clear its security review never reaches steady-state consumption. The gateway is what gets it shipped — and keeps it shipped as the customer adds the next agent.</em><br><br>We put our name to raising "the security bar for what you buy, build, and deploy, including AI-generated code." This is what that bar looks like on the workload going live right now.</div>
+    <div class="summary-closer">How does the agent know the instruction came from the developer and not the customer? What stops a tool from answering for a tenant that didn't ask? Who sees the model spend before the invoice does?<br><br><em>An AI workload that can't clear its security review doesn't ship. A control point is what gets it through — and keeps it through as the next agent goes live.</em><br><br>We put our name to raising "the security bar for what you buy, build, and deploy, including AI-generated code." This is what that bar looks like on the workload going live right now.</div>
     <div class="summary-actions">
       <button class="summary-cta secondary" id="summaryRestart">↺ Restart Talk</button>
       <button class="summary-cta" id="openTryIt">Try it in FortiAIGate →</button>
@@ -1660,7 +1655,7 @@ const INCIDENT_TEXTS = [
   ],
 ];
 
-const STREAM_COLORS = ['var(--ft-red)','#ff2d2d','var(--ft-silver)','#ff6b6b','var(--ft-teal)'];
+const STREAM_COLORS = ['var(--st1)','var(--st2)','var(--st3)','var(--st4)','var(--st5)'];
 function getIncidentText(tier){
   const arr = INCIDENT_TEXTS[Math.max(0, Math.min(3, tier))];
   return arr[Math.floor(Math.random() * arr.length)];
@@ -1949,7 +1944,7 @@ const SLIDES = {
   fork: { accent:C.silver, html:`
     <div class="slide-eyebrow" style="color:${C.silver}">CHOOSE THE CONVERSATION</div>
     <div class="slide-title">Two directions. <span class="gr">Two different problems.</span></div>
-    <div class="slide-sub">Both get called "AI security". Different control, different buyer, different conversation. <strong>Click the one this conversation is about.</strong></div>
+    <div class="slide-sub">Both get called "AI security". Different control, different owner, different conversation. <strong>Click the one this conversation is about.</strong></div>
 
     <div class="fork-grid">
 
@@ -2014,7 +2009,7 @@ const SLIDES = {
       </div>
 
     </div>
-    <div class="slide-takeaway">The first is a security team buying a guardrail for tools employees already use. The second is a <strong>product team unblocking a launch</strong> — and a workload that can't clear security review never reaches steady-state consumption.</div>
+    <div class="slide-takeaway">The first is a security team buying a guardrail for tools employees already use. The second is a <strong>product team unblocking a launch</strong> — and a workload that can't clear its security review doesn't ship.</div>
   `},
   /* ═══ SAME LOOP, HIGHER STAKES — bridges the refund example back to the letter ═══ */
   scale: { accent:C.red, html:`
@@ -2110,26 +2105,26 @@ const SLIDES = {
         <div class="sim-stat"><div class="num" style="color:var(--ft-red)">50%+</div><div class="lbl">of GenAI projects abandoned after proof of concept —<br>insufficient risk controls among the top reasons</div></div>
         <div class="sim-stat"><div class="num" style="color:var(--ft-silver)">94% <span style="color:var(--text-dim)">vs</span> 33%</div><div class="lbl">confident their agents aren't over-permissioned,<br>versus actually enforcing least privilege</div></div>
       </div>
-      <div class="sim-outcome" style="border-left-color:var(--ft-green)"><strong>Read the middle number again.</strong> A delayed workload is consumption that hasn't started; a <em>diminished</em> one is consumption permanently capped — the agent shipped without the tools, the data, or the autonomy that made it worth building. The control point is not a tax on the workload. It's the argument that gets it out of review intact.</div>
+      <div class="sim-outcome" style="border-left-color:var(--ft-green)"><strong>Read the middle number again.</strong> A delayed workload is value that hasn't landed yet; a <em>diminished</em> one is capped for good — the agent shipped without the tools, the data, or the autonomy that made it worth building in the first place. A control point isn't a tax on the workload. It's what gets it out of review intact.</div>
       <div class="stat-src">EMA, <em>The State of AI Friction</em> (152 IT &amp; security leaders, 2026) · Gartner, GenAI post-PoC abandonment · Cequence &amp; EMA, <em>Agents Without Guardrails</em> (2026). Verify figures against the source reports before presenting.</div>
     </div>
   `},
 
-  /* ═══ THE ASK — what the seller does on Monday ═══ */
+  /* ═══ WHERE TO START — closing ask, written to be shown to a customer ═══ */
   ask: { accent:C.green, html:`
-    <div class="slide-eyebrow" style="color:${C.green}">THE PLAY</div>
-    <div class="slide-title">What to do with this <span class="gr">on Monday</span></div>
-    <div class="slide-sub">This isn't a security pitch to a security buyer. It's a launch conversation with the team whose workload is sitting in review.</div>
+    <div class="slide-eyebrow" style="color:${C.green}">WHERE TO START</div>
+    <div class="slide-title">Three things worth doing<br>before the <span class="gr">launch date</span></div>
+    <div class="slide-sub">None of these needs a procurement cycle to begin, and each one produces something the security review is going to ask for anyway.</div>
     <div class="owasp-why">
-      <div class="owasp-why-card"><h4>1 · Qualify in one minute</h4><p>Is there an AI application that <b>people outside the company can reach</b>? Does the agent <b>call tools or retrieve company data</b>? Is it <b>multi-tenant or regulated</b>?</p><p style="margin-top:8px;color:var(--ft-green)"><b>Two yeses and this is the conversation.</b></p></div>
-      <div class="owasp-why-card"><h4>2 · Get in before the review</h4><p>Aim at the <b>design review, not the security review</b> — the point where the architecture is still cheap to change. Bring the application and platform teams; security is the approver, rarely the buyer.</p><p style="margin-top:8px">The workload owner cares about the launch date. That's the door.</p></div>
-      <div class="owasp-why-card"><h4>3 · Prove it in the real account</h4><p>Run the payloads from the next screen against <b>the real workload</b>, in the account that runs it. Show the block, the log, and the per-tenant view.</p><p style="margin-top:8px">Nothing lands like watching your own agent take a stranger's instruction.</p></div>
+      <div class="owasp-why-card"><h4>1 · Inventory what is exposed</h4><p>Which agents can be reached from outside the organisation, what tools each one can call, and which data each one retrieves.</p><p style="margin-top:8px">Most teams can't produce that list today. Producing it is usually the first finding.</p></div>
+      <div class="owasp-why-card"><h4>2 · Cover the paths nothing sits on</h4><p>Start where the native controls don't reach: model endpoints outside Bedrock, direct API calls, and the egress itself.</p><p style="margin-top:8px">That is a day of configuration rather than a project — and it closes the gap the review will find.</p></div>
+      <div class="owasp-why-card"><h4>3 · Test it on a real workload</h4><p>Send the payloads on the next screen through a live agent and read what comes back — blocked, logged, and attributed to a tenant.</p><p style="margin-top:8px">Evidence answers a security review far faster than architecture diagrams do.</p></div>
     </div>
     <div class="ask-cta">
-      <div class="ask-cta-line">Next step: get your Fortinet account team into that design review — and bring a payload with you.</div>
+      <div class="ask-cta-line">These questions are cheaper to answer now than at the launch gate.</div>
       <button class="ask-btn" onclick="openTryIt()">Open the payloads →</button>
     </div>
-    <div class="slide-takeaway">Every workload that clears its review is a workload that starts consuming — and then adds the next agent. <strong>That's the whole business case, and it's the same sentence for the customer, for AWS, and for us.</strong></div>
+    <div class="slide-takeaway">Each step produces <strong>evidence rather than assurances</strong> — an inventory, a control point, and a log showing exactly what was stopped and for whom. That is what turns an AI launch from a debate into a sign-off.</div>
   `},
 
   /* The outbound path — presented as a standing overview of that conversation.
@@ -2150,8 +2145,8 @@ const SLIDES = {
       </div>
       <div class="cmp-col" style="border-color:rgba(162,178,200,0.35)">
         <h3>Why it's its own conversation</h3>
-        <div class="cmp-tag" style="color:${C.silver}">DIFFERENT BUYER · DIFFERENT PROOF</div>
-        <div class="cmp-li">It's bought by the security team, not the product team shipping a workload.</div>
+        <div class="cmp-tag" style="color:${C.silver}">DIFFERENT OWNER · DIFFERENT PROOF</div>
+        <div class="cmp-li">It's owned by the security team, not the product team shipping a workload.</div>
         <div class="cmp-li">The win is control over tools the company already pays for — not a launch getting unblocked.</div>
         <div class="cmp-li">The proof point is a discovery report, not an application architecture review.</div>
         <div class="cmp-li">Much of that traffic never touches the AWS account at all.</div>
