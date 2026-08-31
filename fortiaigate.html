@@ -624,6 +624,27 @@ svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-eve
 .tryit-catch b{color:var(--text-primary)}
 .tryit-back{display:block;margin:0 auto;font-size:13px;font-weight:600;color:var(--text-secondary);background:var(--surface-2);border:1px solid var(--border-default);border-radius:24px;padding:11px 26px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
 .tryit-back:hover{background:var(--surface-1);color:var(--text-primary)}
+/* ── THREE-PATH DIAGRAM (guardrails slide) ── */
+.gd{display:block;width:100%;max-width:1000px;margin:2px auto 16px;height:auto;color:var(--text-dim)}
+.gd-box{fill:var(--surface-1);stroke:var(--border-strong);stroke-width:1.4}
+.gd-box.aws{stroke:rgba(162,178,200,.75)}
+.gd-gate{fill:rgba(60,177,126,.10);stroke:var(--ft-green);stroke-width:2.2}
+.gd-line{stroke:currentColor;stroke-width:2;opacity:.75}
+.gd-line.aws{stroke:var(--ft-silver);stroke-dasharray:7 5}
+.gd-line.ours{stroke:var(--ft-green)}
+.gd-head{fill:currentColor;opacity:.85}
+.gd-head.aws{fill:var(--ft-silver)}
+.gd-head.ours{fill:var(--ft-green)}
+.gd-t{font-size:13px;font-weight:700;fill:var(--text-primary)}
+.gd-t.aws{fill:var(--ft-silver)}
+.gd-t.ours{fill:var(--ft-green)}
+.gd-s{font-size:10.5px;font-weight:500;fill:var(--text-secondary)}
+.gd-s.aws{fill:var(--ft-silver);font-weight:700}
+.gd-cap{font-size:9.5px;font-weight:700;letter-spacing:.4px;fill:var(--text-dim)}
+.gd-cap.aws{fill:var(--ft-silver)}
+.gd-cap.ours{fill:var(--ft-green)}
+html.projector-mode .gd{color:var(--text-secondary)}
+html.projector-mode .gd-cap{fill:var(--text-secondary)}
 /* ── EVIDENCE + ASK SLIDES ── */
 .stat-src{margin-top:18px;font-size:10.5px;line-height:1.6;color:var(--text-dim);text-align:center}
 .ask-cta{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;margin:4px 0 18px}
@@ -1966,7 +1987,47 @@ const SLIDES = {
   guardrails: { accent:C.green, html:`
     <div class="slide-eyebrow" style="color:${C.green}">COMPLEMENTARY, NOT COMPETING</div>
     <div class="slide-title">Model guardrails and a gateway<br>do <span class="gr">different jobs</span></div>
-    <div class="slide-sub">The native controls are good, and getting better. The question isn't whether they work — it's <strong>how many separate control points the team ends up running, who runs them, and which paths none of them sit on.</strong></div>
+    <div class="slide-sub">The native controls are good. The question is <strong>which paths they sit on</strong> — and who runs the ones they don't.</div>
+    <svg class="gd" viewBox="0 0 1000 196" role="img" aria-label="Three egress paths: Bedrock over PrivateLink enforced by AWS, non-Bedrock models and employee traffic enforced by the gateway">
+      <rect class="gd-box" x="6" y="14" width="168" height="74" rx="9"/>
+      <text class="gd-t" x="90" y="44" text-anchor="middle">Agent workload</text>
+      <text class="gd-s" x="90" y="60" text-anchor="middle">in the VPC</text>
+      <rect class="gd-box" x="6" y="108" width="168" height="66" rx="9"/>
+      <text class="gd-t" x="90" y="134" text-anchor="middle">Employees</text>
+      <text class="gd-s" x="90" y="150" text-anchor="middle">&amp; internal apps</text>
+
+      <line class="gd-line aws" x1="174" y1="40" x2="648" y2="40"/>
+      <polygon class="gd-head aws" points="648,34 662,40 648,46"/>
+      <text class="gd-s aws" x="200" y="30">PrivateLink · AWS API</text>
+      <text class="gd-cap aws" x="200" y="60">AWS enforces — IAM condition · Guardrails · Cedar policy</text>
+      <rect class="gd-box aws" x="662" y="12" width="332" height="56" rx="9"/>
+      <text class="gd-t aws" x="828" y="36" text-anchor="middle">Amazon Bedrock · AgentCore</text>
+      <text class="gd-s" x="828" y="53" text-anchor="middle">the path AWS owns end to end</text>
+
+      <line class="gd-line ours" x1="174" y1="112" x2="392" y2="112"/>
+      <polygon class="gd-head ours" points="392,106 406,112 392,118"/>
+      <text class="gd-cap" x="182" y="103">egress · no IAM condition attaches</text>
+      <line class="gd-line ours" x1="174" y1="158" x2="392" y2="158"/>
+      <polygon class="gd-head ours" points="392,152 406,158 392,164"/>
+      <text class="gd-cap" x="182" y="149">egress · unsanctioned tools</text>
+
+      <rect class="gd-gate" x="406" y="86" width="164" height="98" rx="11"/>
+      <text class="gd-t ours" x="488" y="122" text-anchor="middle">FortiAIGate</text>
+      <text class="gd-s" x="488" y="139" text-anchor="middle">inspect · redact</text>
+      <text class="gd-s" x="488" y="154" text-anchor="middle">meter · log</text>
+      <text class="gd-cap ours" x="488" y="176" text-anchor="middle">egress policy permits only this</text>
+
+      <line class="gd-line ours" x1="570" y1="112" x2="648" y2="112"/>
+      <polygon class="gd-head ours" points="648,106 662,112 648,118"/>
+      <line class="gd-line ours" x1="570" y1="158" x2="648" y2="158"/>
+      <polygon class="gd-head ours" points="648,152 662,158 648,164"/>
+      <rect class="gd-box" x="662" y="86" width="332" height="52" rx="9"/>
+      <text class="gd-t" x="828" y="108" text-anchor="middle">Self-hosted · OpenAI · Anthropic · Vertex</text>
+      <text class="gd-s" x="828" y="125" text-anchor="middle">no native control attaches here</text>
+      <rect class="gd-box" x="662" y="146" width="332" height="46" rx="9"/>
+      <text class="gd-t" x="828" y="167" text-anchor="middle">Public GenAI</text>
+      <text class="gd-s" x="828" y="183" text-anchor="middle">the outbound direction, entirely</text>
+    </svg>
     <div class="cmp">
       <div class="cmp-col" style="border-color:rgba(162,178,200,0.4)">
         <h3>What the native controls do well</h3>
