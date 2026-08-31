@@ -472,7 +472,7 @@ svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-eve
 .demo-a.gen .da-label{color:var(--ft-silver)}
 .demo-a.fin .da-label{color:var(--ft-teal)}
 .demo-tag{text-align:center;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-top:4px}
-.astep{display:flex;gap:11px;align-items:flex-start;padding:9px 13px;margin-bottom:7px;border-radius:10px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.07);border-left:3px solid var(--ft-teal);opacity:0;transform:translateX(-7px);transition:opacity .3s,transform .3s}
+.astep{display:flex;gap:11px;align-items:flex-start;padding:9px 13px;margin-bottom:7px;border-radius:10px;background:var(--surface-1);border:1px solid var(--border-subtle);border-left:3px solid var(--ft-teal);opacity:0;transform:translateX(-7px);transition:opacity .3s,transform .3s}
 .astep.show{opacity:1;transform:none}
 .astep-ico{font-size:15px;line-height:1.4;flex-shrink:0;display:inline-flex;align-items:center}
 .astep-ico svg{width:17px;height:17px;color:var(--text-secondary)}
@@ -513,7 +513,7 @@ svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-eve
 .astep.bad .astep-txt b{color:var(--ft-red)}
 .demo-a.bad{background:rgba(218,41,28,0.1);border:1px solid rgba(218,41,28,0.45);color:var(--text-primary)}
 .demo-a.bad .da-label{color:var(--ft-red)}
-.log-block{margin-top:8px;font-family:ui-monospace,Menlo,monospace;font-size:11px;line-height:1.6;color:var(--text-dim);background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:9px 11px}
+.log-block{margin-top:8px;font-family:ui-monospace,Menlo,monospace;font-size:11px;line-height:1.6;color:#b9bfcc;background:rgba(0,0,0,0.42);border:1px solid rgba(255,255,255,0.12);border-radius:7px;padding:9px 11px}
 .log-mal{display:block;margin-top:4px;color:#ff6b5e;background:rgba(218,41,28,0.16);padding:4px 7px;border-radius:4px;border-left:2px solid var(--ft-red)}
 .panel-simbtn{display:block;width:100%;margin-top:18px;padding:13px 16px;border:none;border-radius:10px;background:var(--ft-teal);color:#04232b;font-size:13px;font-weight:800;letter-spacing:.4px;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
 .panel-simbtn:hover{filter:brightness(1.1)}
@@ -624,6 +624,48 @@ svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-eve
 .tryit-catch b{color:var(--text-primary)}
 .tryit-back{display:block;margin:0 auto;font-size:13px;font-weight:600;color:var(--text-secondary);background:var(--surface-2);border:1px solid var(--border-default);border-radius:24px;padding:11px 26px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
 .tryit-back:hover{background:var(--surface-1);color:var(--text-primary)}
+
+/* ── THE FULL-SCREEN EXAMPLES ARE A CINEMA SCREEN ──
+   The overlay is a near-black panel in every theme, so the palette *inside* it is
+   pinned to the dark token values regardless of .light-mode. Without this, light
+   mode paints dark-grey text and white glass cards onto a black background, which
+   is what made the agent examples hard to read. Note the same components
+   (.demo-stage, .astep, .demo-q…) are also used inline on the agency slide, where
+   they must follow the theme — which is why this is scoped to the overlay. */
+.sim-overlay{
+  --text-primary:#f5f5f7;
+  --text-secondary:#9ba0aa;      /* a touch brighter than the page default: this is read at distance */
+  --text-dim:#767b86;
+  --ft-grey:#75787B;
+  --border-subtle:rgba(255,255,255,0.08);
+  --border-default:rgba(255,255,255,0.14);
+  --border-strong:rgba(255,255,255,0.22);
+  --surface-1:rgba(255,255,255,0.04);
+  --surface-2:rgba(255,255,255,0.08);
+  --surface-glass-bg:rgba(18,20,28,0.72);
+  --surface-glass-border:rgba(255,255,255,0.12);
+  --surface-card-bg:rgba(14,16,24,0.85);
+  --shadow-card:0 18px 60px rgba(0,0,0,0.55), 0 2px 0 rgba(255,255,255,0.04) inset;
+  --shadow-lift:0 8px 28px rgba(0,0,0,0.45);
+}
+html.projector-mode .sim-overlay{
+  --text-secondary:#d6d9e0;
+  --text-dim:#a8adb8;
+  --border-subtle:rgba(255,255,255,0.22);
+  --border-default:rgba(255,255,255,0.34);
+  --border-strong:rgba(255,255,255,0.50);
+  --surface-1:rgba(255,255,255,0.09);
+  --surface-2:rgba(255,255,255,0.15);
+  --surface-glass-bg:rgba(20,22,30,0.95);
+  --surface-glass-border:rgba(255,255,255,0.30);
+}
+/* light-mode component patches must not leak into the overlay (equal specificity, later wins) */
+.sim-overlay .demo-back,.sim-overlay .skip-btn{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.16)}
+.sim-overlay .demo-back:hover,.sim-overlay .skip-btn:hover{background:rgba(255,255,255,0.14)}
+.sim-overlay .mesh-node{border-color:rgba(255,255,255,0.16)}
+.sim-overlay .astep{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.09)}
+.sim-overlay .tryit-payload{color:#d6dcea;background:rgba(0,0,0,0.4)}
+
 /* ── THREE-PATH DIAGRAM (guardrails slide) ── */
 .gd{display:block;width:100%;max-width:1000px;margin:2px auto 16px;height:auto;color:var(--text-dim)}
 .gd-box{fill:var(--surface-1);stroke:var(--border-strong);stroke-width:1.4}
