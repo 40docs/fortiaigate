@@ -368,7 +368,12 @@ svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-eve
 .slide-layer.show{display:flex}
 .slide-layer.flow-enter{opacity:0;transform:translateY(8px)}
 .slide-layer.panel-open{padding-right:var(--panel-width)}
-.slide-inner{max-width:1040px;width:100%;margin:0 auto;padding:34px 0 4px;flex:1}
+/* The deck canvas is 1920 wide. 1040 left ~440px of dead margin on each side, and
+   flex:1 pinned short slides to the top with a gap above the nav row. A wider column
+   plus auto block margins fixes both — auto margins centre when there's room and
+   collapse to 0 when the content is taller, so nothing is ever clipped out of reach.
+   Prose keeps its own measure: .slide-sub caps at 840, .slide-takeaway at 900. */
+.slide-inner{max-width:1280px;width:100%;margin:auto;padding:28px 0 4px}
 .slide-eyebrow{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;text-align:center;margin-bottom:8px}
 .slide-title{font-size:33px;font-weight:800;color:#fff;text-align:center;margin-bottom:10px;line-height:1.2}
 .light-mode .slide-title{color:#1d1d1f}
@@ -694,7 +699,6 @@ html.projector-mode .gd-cap{fill:var(--text-secondary)}
 .ask-btn{font-family:inherit;font-size:13px;font-weight:700;color:#fff;background:var(--ft-green);border:none;border-radius:10px;padding:11px 20px;cursor:pointer;transition:all .25s var(--ease-out-soft)}
 .ask-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-lift)}
 /* ── PREAMBLE SLIDE (the open letter) ── */
-.slide-inner:has(.sig-strip){max-width:1180px}
 .letter-quote{position:relative;max-width:960px;margin:2px auto 20px;padding:17px 26px 15px 30px;border-left:3px solid var(--ft-red);border-radius:0 12px 12px 0;
   background:var(--surface-1);font-size:15px;font-weight:500;line-height:1.65;color:var(--text-secondary)}
 .letter-quote b{color:var(--text-primary);font-weight:700}
