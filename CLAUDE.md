@@ -105,12 +105,26 @@ branches on which overlay is currently up.
 
 ### Theming
 
-Three orthogonal modes, all driven by CSS custom properties on `:root` / `html`:
-dark (default), `.light-mode`, and `html.projector-mode` (high-contrast for washed-out projectors,
-with a `.projector-mode.light-mode` variant). New surfaces must read the design tokens
-(`--border-*`, `--surface-*`, `--text-*`, `--shadow-*`) rather than hard-coding colors — projector
-mode works by overriding those tokens, and anything hard-coded needs a manual override added to
-the `html.projector-mode` block. Brand colors live in `C` (JS) and `--ft-*` (CSS).
+**Light is the deck's default.** The `.light-mode` class ships on `<html>` in the markup, and a
+tiny pre-paint script in `<head>` removes it if the presenter's stored choice (`fag-theme` in
+localStorage) is dark — so there's no flash on load. The toggle writes that key and shows the icon
+for the mode it will switch *to*. Dark is therefore the `:root` palette with the class absent.
+
+Three orthogonal modes, all driven by CSS custom properties: `:root` (dark values), `.light-mode`
+(the default overrides), and `html.projector-mode` (high-contrast for washed-out projectors, with
+a `.projector-mode.light-mode` variant).
+
+**Always read the tokens** (`--border-*`, `--surface-*`, `--text-*`, `--shadow-*`) rather than
+hardcoding a color. A hardcoded value does not flip with the theme *and* cannot be reached by
+projector mode, which works by overriding those same tokens — that combination is what produced
+the pile of one-off `.light-mode` patches this file used to carry. Brand colors live in `C` (JS)
+and `--ft-*` (CSS); white text on a brand-colored fill (`color:#fff` on a button) is correct in
+both themes and needs no patch.
+
+Note the class name reads backwards from its behavior: `.light-mode` is present by default and
+*removing* it gives dark. Inverting that properly (light in `:root`, a `.dark-mode` override)
+would change the specificity of ~59 rules, which can't be verified here without a browser, so it
+was left alone deliberately.
 
 ### Simulations
 
