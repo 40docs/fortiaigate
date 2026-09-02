@@ -768,17 +768,22 @@ html.projector-mode .prin{color:var(--text-secondary)}
 .fp-actor.bad b{color:var(--ft-red);font-weight:700}
 
 /* right of the inbound poster: the environment, model glowing inside */
-.fp-vault{position:absolute;right:20px;top:50%;transform:translateY(-50%);width:180px;height:176px;border-radius:17px;z-index:2;
-  border:2px solid rgba(60,177,126,.55);background:rgba(60,177,126,.07);overflow:hidden}
-.fp-core{position:absolute;inset:0;margin:auto;width:74px;height:74px;border-radius:19px;display:flex;align-items:center;justify-content:center;
+.fp-vault{position:absolute;right:16px;top:50%;transform:translateY(-50%);width:192px;height:186px;border-radius:14px;z-index:2;
+  border:2px solid rgba(60,177,126,.6);background:rgba(60,177,126,.06);overflow:hidden}
+/* the boundary grammar an AWS diagram uses — a labelled cloud, a dashed VPC inside it */
+.fp-zone-lbl{position:absolute;left:9px;top:7px;font-size:8px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;color:var(--ft-green);opacity:.9}
+.fp-zone-lbl.vpc{left:7px;top:5px;color:var(--text-dim);opacity:1}
+.fp-vpc{position:absolute;left:11px;right:11px;top:26px;height:126px;border-radius:10px;border:1.5px dashed var(--border-strong);background:rgba(255,255,255,0.02)}
+.light-mode .fp-vpc{background:rgba(0,0,0,0.02)}
+.fp-core{position:absolute;inset:0;margin:auto;width:86px;height:70px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
   border:2px solid rgba(60,177,126,.85);background:rgba(60,177,126,.16);animation:fp-pulse 3.2s ease-in-out infinite}
-.fp-core svg{width:31px;height:31px;color:var(--ft-green);opacity:.95}
+.fp-core b{font-size:8px;font-weight:700;letter-spacing:.3px;color:var(--ft-green);white-space:nowrap}
+.fp-core svg{width:26px;height:26px;color:var(--ft-green);opacity:.95}
 @keyframes fp-pulse{0%,82%,100%{box-shadow:0 0 0 rgba(60,177,126,0);border-color:rgba(60,177,126,.85)}
   90%{box-shadow:0 0 36px rgba(218,41,28,.8);border-color:rgba(218,41,28,.95);background:rgba(218,41,28,.18)}}
-.fp-ring{position:absolute;inset:0;margin:auto;width:74px;height:74px;border-radius:22px;border:2px solid rgba(218,41,28,.6);opacity:0;animation:fp-ripple 3.2s ease-out infinite}
+.fp-ring{position:absolute;inset:0;margin:auto;width:86px;height:70px;border-radius:14px;border:2px solid rgba(218,41,28,.6);opacity:0;animation:fp-ripple 3.2s ease-out infinite}
 @keyframes fp-ripple{0%,86%{transform:scale(.85);opacity:0}92%{opacity:.75}100%{transform:scale(2.15);opacity:0}}
-.fp-vault-cap{position:absolute;left:0;right:0;bottom:11px;text-align:center;font-size:9px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;color:var(--ft-green);opacity:.9}
-.fp-vault-cap i{display:block;margin-top:3px;font-style:normal;font-size:8px;font-weight:600;letter-spacing:.5px;text-transform:none;color:var(--text-dim)}
+.fp-vault-cap{position:absolute;left:0;right:0;bottom:9px;text-align:center;font-size:8.5px;font-weight:600;letter-spacing:.4px;color:var(--text-dim)}
 .fp-brick{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(60,177,126,.55),transparent);top:0;animation:fp-scan 5.5s linear var(--bd) infinite}
 @keyframes fp-scan{0%{top:-2%;opacity:0}12%{opacity:.9}88%{opacity:.9}100%{top:102%;opacity:0}}
 
@@ -1986,12 +1991,14 @@ const SLIDES = {
             <span class="fp-actor bad" style="--fd:.35s">${ART.hooded}<b>anyone else</b></span>
           </div>
           <div class="fp-vault">
+            <span class="fp-zone-lbl">AWS Cloud</span>
+            <div class="fp-vpc"><span class="fp-zone-lbl vpc">VPC</span></div>
             <div class="fp-ring"></div>
-            <div class="fp-core">${ICONS.cpu}</div>
+            <div class="fp-core">${ICONS.cpu}<b>model endpoint</b></div>
             <i class="fp-brick" style="--bd:0s"></i><i class="fp-brick" style="--bd:.9s"></i>
-            <span class="fp-vault-cap">private model<i>Bedrock · SageMaker · self-hosted</i></span>
+            <span class="fp-vault-cap">Bedrock · SageMaker · self-hosted</span>
           </div>
-          <div class="fp-tag fp-tag-r">THE AWS ENVIRONMENT</div>
+          <div class="fp-tag fp-tag-r">ONE ACCOUNT</div>
           ${motes(8, { x0:176, dx:268, base:3.2, top:[14,86] })}
           ${packets([['a question',16,0],['an uploaded doc',72,2]], { x0:176, dx:212, base:5.4 })}
           ${strikes(176, 246)}
