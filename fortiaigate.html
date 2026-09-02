@@ -1305,7 +1305,7 @@ const NODES = [
   { id:'gw', badge:'', icon:ICONS.shield, label:'AI Gateway',
     x:620, y:110, act:4, color:C.green, accentRgb:ACT_RGB[3], isProxyBox:true,
     title:'The AI Gateway — one control point', tagLabel:'THE CONTROL POINT', tagColor:C.green,
-    body:`<p>One gateway inside the environment, in front of the model endpoints and the MCP servers. Everything the agent sends and everything it gets back passes through it.</p><p>It is a transparent proxy, not an SDK: the application points at the gateway's endpoint instead of the model's, and inspection applies to every call — including the ones a developer added last night.</p><p>Click any capability to see how it maps to the ${g('OWASP Top 10 for LLMs')}.</p>`,
+    body:`<p>One gateway inside the environment, in front of the model endpoints and the MCP servers. Everything the agent sends and everything it gets back passes through it.</p><p>It is a proxy, not an SDK: the application points at the gateway's endpoint instead of the model's, and inspection applies to every call — including the ones a developer added last night. The provider API keys live in the gateway too, so application teams stop holding them and rotation becomes one operation.</p><p>Click any capability to see how it maps to the ${g('OWASP Top 10 for LLMs')}.</p>`,
     seller:`The architectural point: this is a control that runs inside the same account and VPC, in front of whichever providers are in use, and it doesn't change when the orchestration framework does. It's the piece of the design that can stay still while the AI stack keeps moving.<br><br><strong>Where AWS already has this covered.</strong> Both native controls are real: Bedrock Guardrails can be made non-optional with the <code>bedrock:GuardrailIdentifier</code> IAM condition, and AgentCore Gateway applies Cedar policy and interceptors to any agent that points at its MCP endpoint — no rebuild required. Both are good, and both stop where AWS's control of the path stops: at Bedrock inference and at registered tools.<br><br><strong>Where the path leaves AWS's reach.</strong> A container calling <code>api.openai.com</code> with a key from an env var touches no IAM condition and no guardrail. Self-hosted models, third-party APIs, and anything a developer wires up next weekend are governed by whatever sits on the network path — which is the one place the argument inverts. A base URL is a convention; an egress policy is a control.`,
     proxyItems: [
       { emoji:ICONS.shieldCheck, code:'LLM01', label:'Prompt Inspection',      nodeId:'gw1' },
@@ -2080,11 +2080,11 @@ const SLIDES = {
       <div class="cmp-col" style="border-color:rgba(60,177,126,0.5)">
         <h3>What the gateway adds around them</h3>
         <div class="cmp-tag" style="color:${C.green}">ONE CONTROL POINT · EVERY PATH</div>
-        <div class="cmp-li"><strong>Every provider behind one endpoint</strong> — OpenAI, Anthropic, Azure AI Foundry and Bedrock Converse, with inbound OpenAI-format requests translated to each backend. The container calling <code>api.openai.com</code> from an env-var key touches no IAM condition and no guardrail; this is the path it takes instead.</div>
+        <div class="cmp-li"><strong>Every provider behind one endpoint</strong> — OpenAI, Anthropic, Azure AI Foundry and Bedrock Converse, plus any OpenAI-compatible endpoint through private endpoint config, a self-hosted model included. The container calling <code>api.openai.com</code> from an env-var key touches no IAM condition and no guardrail; this is the path it takes instead.</div>
         <div class="cmp-li"><strong>Made non-optional by the network</strong> — the gateway doesn't enforce its own use; egress policy on the firewall does. Permit model traffic only by way of it and the base URL stops being a choice a developer can quietly change.</div>
         <div class="cmp-li"><strong>${g('MCP')} traffic in both directions</strong> — <code>tools/list</code>, <code>tools/call</code> and <code>tools/response</code> scanned for injection, data leakage and toxicity. The layer where injection turns into action.</div>
         <div class="cmp-li"><strong>Responses inspected, not just prompts</strong> — PII, secrets and regulated data across 35 entity types redacted on the way out, in the direction a policy on the request never sees.</div>
-        <div class="cmp-li"><strong>Priced and logged per interaction</strong> — input and output token cost per provider and model, with every prompt and response kept for audit.</div>
+        <div class="cmp-li"><strong>Priced and logged per interaction</strong> — input and output token cost set per provider and model, every prompt and response logged and forwarded by syslog.</div>
       </div>
     </div>
     <div class="slide-takeaway">A clean division of labour: <strong>let AWS enforce where AWS owns the path</strong> — Bedrock inference, registered tools. <strong>Put a security-owned control point where it doesn't</strong> — every other model, the egress itself, and the outbound direction entirely. One policy across both, one evidence trail, one team accountable for it.</div>
@@ -2191,7 +2191,7 @@ const SLIDES = {
     <div class="sim-wide">
       <p class="sim-lead">FortiAIGate is an <strong>AI-aware security gateway</strong> that sits between users and applications and the AI services they call — a single control point to discover AI usage, enforce policy, and stop AI-specific threats.</p>
       <div class="sim-pills">
-        <span class="sim-pill">Discover</span><span class="sim-pill">Govern</span><span class="sim-pill">Protect</span><span class="sim-pill">Part of the Fortinet Security Fabric</span>
+        <span class="sim-pill">Discover</span><span class="sim-pill">Govern</span><span class="sim-pill">Protect</span><span class="sim-pill">Runs in your Kubernetes cluster</span>
       </div>
       <div class="sim-cards">
         <div class="sim-card"><div class="sim-ico"><img src="assets/ai-threat-white.svg" alt=""></div><h3>For users</h3><p>Safe access to public GenAI tools without leaking sensitive data.</p></div>
@@ -2239,7 +2239,7 @@ const SLIDES = {
           <div class="sim-arch-node"><img src="assets/cloud-white.svg" alt=""><div class="sim-arch-cap">Private &amp; API<span>models</span></div></div>
         </div>
       </div>
-      <div class="sim-fabric"><img src="assets/secure-ai-white.svg" alt="">Context shared with the Fortinet Security Fabric — logging, analytics &amp; enforcement</div>
+      <div class="sim-fabric"><img src="assets/secure-ai-white.svg" alt="">Every prompt and response logged, and forwarded by syslog to the SIEM already in place</div>
     </div>
   `},
 
@@ -2254,8 +2254,8 @@ const SLIDES = {
       </div>
       <div class="sim-cards" style="margin-top:16px">
         <div class="sim-card"><h3>Granular policy</h3><p>Per-user, per-group, per-app rules — sanction the right tools, block the rest.</p></div>
-        <div class="sim-card"><h3>Compliance &amp; audit</h3><p>Full logging of AI interactions for governance, audit, and investigation.</p></div>
-        <div class="sim-card"><h3>Fabric integration</h3><p>Shares context with FortiGate, FortiGuard, and the broader Security Fabric.</p></div>
+        <div class="sim-card"><h3>Compliance &amp; audit</h3><p>Traffic and event logs for every AI interaction, forwarded by syslog to your SIEM.</p></div>
+        <div class="sim-card"><h3>Runs where the workload runs</h3><p>Helm-deployed containers in your own Kubernetes cluster, with GPU-accelerated scanners and your own ingress.</p></div>
       </div>
     </div>
   `},
