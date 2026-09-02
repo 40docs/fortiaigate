@@ -39,6 +39,10 @@ try { if (localStorage.getItem('fag-theme') === 'dark') document.documentElement
   --surface-card-bg: rgba(14,16,24,0.78);
   --shadow-card: 0 18px 60px rgba(0,0,0,0.55), 0 2px 0 rgba(255,255,255,0.04) inset;
   --shadow-lift: 0 8px 28px rgba(0,0,0,0.45);
+  /* AWS orange for the customer's environment. --aws paints fills, borders and
+     glow; --aws-text is the readable weight for labels, which flips with the theme
+     because #FF9900 measures 2.05:1 on white. */
+  --aws:#FF9900; --aws-text:#FF9900;
   /* incident-stream colours for the breach cinematic */
   --st1:#DA291C; --st2:#ff2d2d; --st3:#A2B2C8; --st4:#ff6b6b; --st5:#2CCCD3;
   --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
@@ -62,6 +66,7 @@ try { if (localStorage.getItem('fag-theme') === 'dark') document.documentElement
   --shadow-card: 0 18px 60px rgba(0,0,0,0.14), 0 1px 0 rgba(0,0,0,0.04) inset;
   --shadow-lift: 0 8px 24px rgba(0,0,0,0.10);
   --st1:#b81d12; --st2:#d92b1c; --st3:#5b6b80; --st4:#c2453a; --st5:#0f8f96;
+  --aws-text:#B45309;
 }
 /* ── PROJECTOR / HIGH-CONTRAST MODE ──
    Boosts text brightness, borders, surfaces and diagram lines so the deck stays
@@ -713,10 +718,10 @@ html.projector-mode .prin{color:var(--text-secondary)}
 .fork-poster{position:relative;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;border:2px solid var(--border-default);background:var(--surface-card-bg);cursor:pointer;
   transition:transform .45s var(--ease-out-soft),box-shadow .45s var(--ease-out-soft),border-color .35s,opacity .35s,filter .35s}
 .fork-poster.out{border-color:rgba(48,127,226,0.42)}
-.fork-poster.in{border-color:rgba(60,177,126,0.55)}
+.fork-poster.in{border-color:rgba(255,153,0,0.6)}
 .fork-poster:hover{transform:translateY(-7px);box-shadow:var(--shadow-card)}
 .fork-poster.out:hover{border-color:rgba(48,127,226,0.95)}
-.fork-poster.in:hover{border-color:rgba(60,177,126,1)}
+.fork-poster.in:hover{border-color:rgba(255,153,0,1)}
 /* spotlight: hovering one poster steps the other back */
 .fork-grid:hover .fork-poster{opacity:.48;filter:saturate(.5)}
 .fork-grid:hover .fork-poster:hover{opacity:1;filter:none}
@@ -726,7 +731,7 @@ html.projector-mode .prin{color:var(--text-secondary)}
 .fork-poster:hover .fp-scene{transform:scale(1.03)}
 .fp-sky{position:absolute;inset:0}
 .fork-poster.out .fp-sky{background:radial-gradient(105% 85% at 6% 50%,rgba(48,127,226,.20),transparent 58%),linear-gradient(180deg,rgba(48,127,226,.09),transparent 72%),var(--surface-1)}
-.fork-poster.in .fp-sky{background:radial-gradient(85% 85% at 92% 50%,rgba(60,177,126,.22),transparent 60%),radial-gradient(70% 90% at 2% 50%,rgba(218,41,28,.16),transparent 62%),var(--surface-1)}
+.fork-poster.in .fp-sky{background:radial-gradient(85% 85% at 92% 50%,rgba(255,153,0,.20),transparent 60%),radial-gradient(70% 90% at 2% 50%,rgba(218,41,28,.16),transparent 62%),var(--surface-1)}
 .fp-lines{position:absolute;inset:0;opacity:.55;
   background-image:linear-gradient(var(--border-subtle) 1px,transparent 1px),linear-gradient(90deg,var(--border-subtle) 1px,transparent 1px);background-size:36px 36px}
 .fp-vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(125% 105% at 50% 50%,transparent 42%,rgba(0,0,0,.5))}
@@ -769,22 +774,22 @@ html.projector-mode .prin{color:var(--text-secondary)}
 
 /* right of the inbound poster: the environment, model glowing inside */
 .fp-vault{position:absolute;right:16px;top:50%;transform:translateY(-50%);width:192px;height:186px;border-radius:14px;z-index:2;
-  border:2px solid rgba(60,177,126,.6);background:rgba(60,177,126,.06);overflow:hidden}
+  border:2px solid rgba(255,153,0,.65);background:rgba(255,153,0,.06);overflow:hidden}
 /* the boundary grammar an AWS diagram uses — a labelled cloud, a dashed VPC inside it */
-.fp-zone-lbl{position:absolute;left:9px;top:7px;font-size:8px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;color:var(--ft-green);opacity:.9}
+.fp-zone-lbl{position:absolute;left:9px;top:7px;font-size:8px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;color:var(--aws-text);opacity:.95}
 .fp-zone-lbl.vpc{left:7px;top:5px;color:var(--text-dim);opacity:1}
 .fp-vpc{position:absolute;left:11px;right:11px;top:26px;height:126px;border-radius:10px;border:1.5px dashed var(--border-strong);background:rgba(255,255,255,0.02)}
 .light-mode .fp-vpc{background:rgba(0,0,0,0.02)}
 .fp-core{position:absolute;inset:0;margin:auto;width:86px;height:70px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-  border:2px solid rgba(60,177,126,.85);background:rgba(60,177,126,.16);animation:fp-pulse 3.2s ease-in-out infinite}
-.fp-core b{font-size:8px;font-weight:700;letter-spacing:.3px;color:var(--ft-green);white-space:nowrap}
-.fp-core svg{width:26px;height:26px;color:var(--ft-green);opacity:.95}
-@keyframes fp-pulse{0%,82%,100%{box-shadow:0 0 0 rgba(60,177,126,0);border-color:rgba(60,177,126,.85)}
+  border:2px solid rgba(255,153,0,.9);background:rgba(255,153,0,.14);animation:fp-pulse 3.2s ease-in-out infinite}
+.fp-core b{font-size:8px;font-weight:700;letter-spacing:.3px;color:var(--aws-text);white-space:nowrap}
+.fp-core svg{width:26px;height:26px;color:var(--aws-text);opacity:.95}
+@keyframes fp-pulse{0%,82%,100%{box-shadow:0 0 0 rgba(255,153,0,0);border-color:rgba(255,153,0,.9)}
   90%{box-shadow:0 0 36px rgba(218,41,28,.8);border-color:rgba(218,41,28,.95);background:rgba(218,41,28,.18)}}
 .fp-ring{position:absolute;inset:0;margin:auto;width:86px;height:70px;border-radius:14px;border:2px solid rgba(218,41,28,.6);opacity:0;animation:fp-ripple 3.2s ease-out infinite}
 @keyframes fp-ripple{0%,86%{transform:scale(.85);opacity:0}92%{opacity:.75}100%{transform:scale(2.15);opacity:0}}
 .fp-vault-cap{position:absolute;left:0;right:0;bottom:9px;text-align:center;font-size:8.5px;font-weight:600;letter-spacing:.4px;color:var(--text-dim)}
-.fp-brick{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(60,177,126,.55),transparent);top:0;animation:fp-scan 5.5s linear var(--bd) infinite}
+.fp-brick{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,153,0,.5),transparent);top:0;animation:fp-scan 5.5s linear var(--bd) infinite}
 @keyframes fp-scan{0%{top:-2%;opacity:0}12%{opacity:.9}88%{opacity:.9}100%{top:102%;opacity:0}}
 
 /* the traffic itself */
@@ -2005,11 +2010,11 @@ const SLIDES = {
           <div class="fp-vig"></div>
         </div>
         <div class="fp-body">
-          <div class="fp-dir" style="color:var(--ft-green)">Outside → in</div>
-          <h3>Strangers reach the <span style="color:var(--ft-green)">models</span></h3>
+          <div class="fp-dir" style="color:var(--aws-text)">Outside → in</div>
+          <h3>Strangers reach the <span style="color:var(--aws-text)">models</span></h3>
           <p class="fp-line">The AI applications built in-house and exposed to the world. What's at risk is everything the agent can reach — data, tools, and the bill.</p>
           <div class="fp-chips"><span>Prompt injection</span><span>Cross-tenant leaks</span><span>Tool abuse</span></div>
-          <div class="fp-foot"><span class="fp-go" style="color:var(--ft-green)">Take this path →</span></div>
+          <div class="fp-foot"><span class="fp-go" style="color:var(--aws-text)">Take this path →</span></div>
         </div>
       </div>
 
