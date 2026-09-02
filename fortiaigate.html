@@ -689,10 +689,6 @@ html.projector-mode .gd{color:var(--text-secondary)}
 html.projector-mode .gd-cap{fill:var(--text-secondary)}
 /* ── EVIDENCE + ASK SLIDES ── */
 .stat-src{margin-top:18px;font-size:10.5px;line-height:1.6;color:var(--text-dim);text-align:center}
-.ask-cta{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;margin:4px 0 18px}
-.ask-cta-line{font-size:14.5px;font-weight:600;color:var(--text-primary)}
-.ask-btn{font-family:inherit;font-size:13px;font-weight:700;color:#fff;background:var(--ft-green);border:none;border-radius:10px;padding:11px 20px;cursor:pointer;transition:all .25s var(--ease-out-soft)}
-.ask-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-lift)}
 /* ── PREAMBLE SLIDE (the open letter) ── */
 .letter-quote{position:relative;max-width:960px;margin:2px auto 20px;padding:17px 26px 15px 30px;border-left:3px solid var(--ft-red);border-radius:0 12px 12px 0;
   background:var(--surface-1);font-size:15px;font-weight:500;line-height:1.65;color:var(--text-secondary)}
@@ -1425,7 +1421,6 @@ const FLOW_TAIL = [
   { type:'slide', id:'fgMcp',     color:C.red },
   { type:'slide', id:'fgLogs',    color:C.red },
   { type:'slide', id:'fgMcpLogs', color:C.red },
-  { type:'slide', id:'ask',       color:C.green },
 ];
 
 let activePath = 'models';
@@ -2109,23 +2104,6 @@ const SLIDES = {
     </div>
   `},
 
-  /* ═══ WHERE TO START — closing ask, written to be shown to a customer ═══ */
-  ask: { accent:C.green, html:`
-    <div class="slide-eyebrow" style="color:${C.green}">WHERE TO START</div>
-    <div class="slide-title">Three things worth doing<br>before the <span class="gr">launch date</span></div>
-    <div class="slide-sub">None of these needs a procurement cycle to begin, and each one produces something the security review is going to ask for anyway.</div>
-    <div class="owasp-why">
-      <div class="owasp-why-card"><h4>1 · Inventory what is exposed</h4><p>Which agents can be reached from outside the organisation, what tools each one can call, and which data each one retrieves.</p><p style="margin-top:8px">Most teams can't produce that list today. Producing it is usually the first finding.</p></div>
-      <div class="owasp-why-card"><h4>2 · Cover the paths nothing sits on</h4><p>Start where the native controls don't reach: model endpoints outside Bedrock, direct API calls, and the egress itself.</p><p style="margin-top:8px">That is a day of configuration rather than a project — and it closes the gap the review will find.</p></div>
-      <div class="owasp-why-card"><h4>3 · Test it on a real workload</h4><p>Send the payloads on the next screen through a live agent and read what comes back — blocked, logged, and attributed to a tenant.</p><p style="margin-top:8px">Evidence answers a security review far faster than architecture diagrams do.</p></div>
-    </div>
-    <div class="ask-cta">
-      <div class="ask-cta-line">These questions are cheaper to answer now than at the launch gate.</div>
-      <button class="ask-btn" onclick="openTryIt()">Open the payloads →</button>
-    </div>
-    <div class="slide-takeaway">Each step produces <strong>evidence rather than assurances</strong> — an inventory, a control point, and a log showing exactly what was stopped and for whom. That is what turns an AI launch from a debate into a sign-off.</div>
-  `},
-
   /* The outbound path — presented as a standing overview of that conversation.
      It reads as a finished summary on purpose: the audience shouldn't be told
      one branch is thinner than the other. */
@@ -2269,7 +2247,6 @@ const SLIDES = {
         <div class="sim-stat"><div class="num">0</div><div class="lbl">sensitive records<br>leaked to public models</div></div>
         <div class="sim-stat"><div class="num">1</div><div class="lbl">policy &amp; control point<br>for all AI traffic</div></div>
       </div>
-      <div class="sim-outcome"><strong>The outcome:</strong> security teams say "yes" to AI productivity instead of "no" — with the guardrails to back it up.</div>
     </div>
   `},
 
