@@ -1,8 +1,16 @@
 name: Deploy to GitHub Pages
 
+# The published site is assembled from two branches, so it has to be built the same
+# way whichever one you push. Keep this file identical on main and on
+# aws-seller-storyline — GitHub runs the copy that lives on the branch you pushed,
+# and a run that only knows about one branch will delete the other's path.
+#
+#   /       main                  the SOC storyline
+#   /aws/   aws-seller-storyline  securing AI agents on AWS
+
 on:
   push:
-    branches: [main]
+    branches: [main, aws-seller-storyline]
   workflow_dispatch:
 
 permissions:
@@ -21,21 +29,45 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: src/main
 
-      - name: Create index redirect
+      - name: Check out aws-seller-storyline
+        uses: actions/checkout@v4
+        with:
+          ref: aws-seller-storyline
+          path: src/aws
+
+      - name: Assemble the site
         run: |
-          cat > index.html << 'EOF'
+          set -euo pipefail
+          mkdir -p _site/aws
+          cp src/main/fortiaigate.html _site/
+          cp -r src/main/assets _site/assets
+          cp src/aws/fortiaigate.html _site/aws/
+          cp -r src/aws/assets _site/aws/assets
+
+          # each deck is reached by its directory; the redirect is relative so the
+          # same file works at the root and at /aws/
+          for dir in _site _site/aws; do
+            cat > "$dir/index.html" << 'HTML'
           <!DOCTYPE html>
           <html>
           <head><meta http-equiv="refresh" content="0; url=fortiaigate.html"></head>
           <body></body>
           </html>
-          EOF
+          HTML
+          done
+
+          echo "published tree:"
+          find _site -maxdepth 2 -not -path '*/assets/*' | sort
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - uses: actions/deploy-pages@v4
         id: deployment

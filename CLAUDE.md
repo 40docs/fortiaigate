@@ -25,9 +25,18 @@ product screenshots referenced by relative path.
 python3 -m http.server 8000    # then open http://localhost:8000/fortiaigate.html
 ```
 
-Deploy: pushing to `main` triggers `.github/workflows/pages.yaml`, which generates an
-`index.html` redirect to `fortiaigate.html` and publishes the repo root to GitHub Pages.
-Nothing is generated at build time beyond that redirect — edit `fortiaigate.html` directly.
+Deploy: `.github/workflows/pages.yaml` assembles the published site from **two branches** and
+runs on a push to either one:
+
+| path | branch | deck |
+|------|--------|------|
+| `/` | `main` | the SOC storyline |
+| `/aws/` | `aws-seller-storyline` | securing AI agents on AWS |
+
+Each directory gets a generated `index.html` redirect to `fortiaigate.html`; nothing else is
+built. **Keep the workflow file identical on both branches** — GitHub runs the copy that lives on
+the branch you pushed, so a stale copy that only knows about one branch will delete the other's
+path on its next run.
 
 ## Architecture
 
