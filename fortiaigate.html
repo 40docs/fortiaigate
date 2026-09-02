@@ -40,9 +40,11 @@ try { if (localStorage.getItem('fag-theme') === 'dark') document.documentElement
   --shadow-card: 0 18px 60px rgba(0,0,0,0.55), 0 2px 0 rgba(255,255,255,0.04) inset;
   --shadow-lift: 0 8px 28px rgba(0,0,0,0.45);
   /* AWS orange for the customer's environment. --aws paints fills, borders and
-     glow; --aws-text is the readable weight for labels, which flips with the theme
-     because #FF9900 measures 2.05:1 on white. */
-  --aws:#FF9900; --aws-text:#FF9900;
+     glow at full brightness; --aws-text is the label weight, and it is deliberately
+     the SAME value in both themes so the word reads identically either way —
+     3.42:1 on the light ground, 5.71:1 on the dark one. True #FF9900 would be
+     2.05:1 on white, which is why the labels step down rather than the theme. */
+  --aws:#FF9900; --aws-text:#CC7000;
   /* incident-stream colours for the breach cinematic */
   --st1:#DA291C; --st2:#ff2d2d; --st3:#A2B2C8; --st4:#ff6b6b; --st5:#2CCCD3;
   --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
@@ -66,10 +68,6 @@ try { if (localStorage.getItem('fag-theme') === 'dark') document.documentElement
   --shadow-card: 0 18px 60px rgba(0,0,0,0.14), 0 1px 0 rgba(0,0,0,0.04) inset;
   --shadow-lift: 0 8px 24px rgba(0,0,0,0.10);
   --st1:#b81d12; --st2:#d92b1c; --st3:#5b6b80; --st4:#c2453a; --st5:#0f8f96;
-  /* Full-saturation orange at 40% lightness: still reads orange, where the deeper
-     ambers that clear 4.5:1 read brown. 3.42:1 on the light ground, near the 3.83:1
-     the blue direction label opposite already runs at. */
-  --aws-text:#CC7000;
 }
 /* ── PROJECTOR / HIGH-CONTRAST MODE ──
    Boosts text brightness, borders, surfaces and diagram lines so the deck stays
