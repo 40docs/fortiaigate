@@ -697,6 +697,9 @@ html.projector-mode .gd-cap{fill:var(--text-secondary)}
 .sig-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 14px;max-width:980px}
 .sig{font-size:11.5px;font-weight:700;letter-spacing:.3px;color:var(--text-secondary);background:var(--surface-2);border:1px solid var(--border-default);border-radius:999px;padding:5px 13px}
 .sig.ours{color:#fff;background:var(--ft-red);border-color:var(--ft-red);box-shadow:0 0 18px rgba(218,41,28,.35)}
+/* AWS orange, as asked. White on #FF9900 measures 2.14:1 — swap the colour for
+   #232F3E (AWS squid ink, 6.34:1) if it reads thin on a projector. */
+.sig.aws{color:#fff;background:#FF9900;border-color:#FF9900;box-shadow:0 0 18px rgba(255,153,0,.35)}
 .sig.more{color:var(--text-dim);font-weight:600;border-style:dashed}
 .principles{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 22px;max-width:980px}
 .prin{font-size:11px;font-weight:600;color:var(--text-dim);border:1px dashed var(--border-default);border-radius:8px;padding:5px 12px}
@@ -1922,7 +1925,7 @@ const SLIDES = {
     <div class="slide-title">"We have a <span class="gr">limited window</span><br>to strengthen cyber defenses."</div>
     <div class="letter-quote">“In the coming months, AI-enabled cyber attacks will become far more widespread and sophisticated as models around the world become increasingly capable… Today's AI advances are already giving defenders new ways to fix weaknesses that have accumulated for years. If we act decisively, we can use the <b>defenders' window</b> to make our digital world much more secure.”<span class="letter-cite">A call for collective action on cyber defense · openai.com · 28 August 2026</span></div>
     <div class="sig-strip">
-      <span class="sig ours">Fortinet</span><span class="sig">AWS</span><span class="sig">OpenAI</span><span class="sig">Anthropic</span><span class="sig">Google</span><span class="sig">Microsoft</span><span class="sig">Cisco</span><span class="sig">IBM</span><span class="sig">Oracle</span><span class="sig">Cloudflare</span><span class="sig more">+ 100 more</span>
+      <span class="sig ours">Fortinet</span><span class="sig aws">AWS</span><span class="sig">OpenAI</span><span class="sig">Anthropic</span><span class="sig">Google</span><span class="sig">Microsoft</span><span class="sig">Cisco</span><span class="sig">IBM</span><span class="sig">Oracle</span><span class="sig">Cloudflare</span><span class="sig more">+ 100 more</span>
     </div>
     <div class="principles">
       <span class="prin">Status quo security won't be enough</span><span class="prin">Empower defenders with cyber-capable AI</span><span class="prin">Mobilize a collective response</span><span class="prin">Each of us can reduce risk now</span>
